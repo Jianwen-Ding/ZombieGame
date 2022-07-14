@@ -40,5 +40,6 @@ public class CalcProgram : MonoBehaviour
         Vector2 ret;
         ret.x = Mathf.Rad2Deg * Mathf.Atan2(z, x);
         ret.y = Mathf.Rad2Deg * Mathf.Atan2(y, z);
+        return ret;
     }
 }
