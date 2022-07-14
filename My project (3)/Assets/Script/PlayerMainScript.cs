@@ -5,8 +5,10 @@ using UnityEngine.XR;
 public class PlayerMainScript : MonoBehaviour
 {
     //Devices
-    private InputDevice rightContr;
-    private InputDevice leftContr;
+    [SerializeField]
+    InputDevice rightContr;
+    [SerializeField]
+    InputDevice leftContr;
     //gameObject
     public static GameObject solePlayer;
     [SerializeField]
@@ -62,6 +64,10 @@ public class PlayerMainScript : MonoBehaviour
         {
             rightContr = inputDevices[0];
         }
+        foreach (var device in inputDevices)
+        {
+            Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
+        }
         InputDevices.GetDevices(inputDevices);
         InputDeviceCharacteristics leftControllerChar = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(leftControllerChar, inputDevices);
@@ -69,7 +75,10 @@ public class PlayerMainScript : MonoBehaviour
         {
             leftContr = inputDevices[0];
         }
-
+        foreach (var device in inputDevices)
+        {
+            Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
+        }
         //establish sole player
         bool foundOthers = false;
         GameObject[] otherObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -90,23 +99,26 @@ public class PlayerMainScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Debug.Log(rightContr);
         //Inputs/Movement
         rightContr.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
+        Debug.Log(primaryButtonValue);
         if (primaryButtonValue)
         {
 
         }
         rightContr.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+        Debug.Log(triggerValue);
         if (triggerValue > 0.1f)
         {
 
         }
         rightContr.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2DAxisValue);
+        Debug.Log(primary2DAxisValue);
         if (primary2DAxisValue != Vector2.zero)
         {
-            CalcProgram.getAngle2D(primary2DAxisValue.x, primary2DAxisValue.y);
-            mainCamera.transform.rotation.x;
+            float angle = CalcProgram.getAngle2D(primary2DAxisValue.x, primary2DAxisValue.y);
+            rb.velocity = new Vector3(CalcProgram.getVectorFromAngle2D(mainCamera.transform.rotation.x + angle,speed).x, CalcProgram.getVectorFromAngle2D(mainCamera.transform.rotation.x + angle, speed).y, rb.velocity.z);
             
         }
     }
