@@ -5,7 +5,8 @@ using UnityEngine.XR;
 public class PlayerMainScript : MonoBehaviour
 {
     //Devices
-    
+    private InputDevice right;
+    private InputDevice left;
     //gameObject
     public static GameObject solePlayer;
     [SerializeField]
@@ -38,15 +39,24 @@ public class PlayerMainScript : MonoBehaviour
     }
     // Start is called before the first frame update
     void Start()
-    {
-        var inputDevices = new List<UnityEngine.XR.InputDevice>();
+    {   //establish devices
+        List<InputDevice> inputDevices = new List<InputDevice>();
         InputDevices.GetDevices(inputDevices);
         InputDeviceCharacteristics rightControllerChar = InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(rightControllerChar, inputDevices);
-        foreach (var device in inputDevices)
+        if(inputDevices.Count > 0)
         {
-            Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
+            right = inputDevices[0];
         }
+        InputDevices.GetDevices(inputDevices);
+        InputDeviceCharacteristics leftControllerChar = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
+        InputDevices.GetDevicesWithCharacteristics(leftControllerChar, inputDevices);
+        if (inputDevices.Count > 0)
+        {
+            left = inputDevices[0];
+        }
+
+        //establish sole player
         bool foundOthers = false;
         GameObject[] otherObjects = GameObject.FindGameObjectsWithTag("Player");
         for (int x = 0; x < otherObjects.Length; x++)
