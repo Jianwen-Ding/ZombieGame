@@ -38,6 +38,7 @@ public class CalcProgram : MonoBehaviour
     static public Vector2 getAngleDiffrence3D(float x, float y, float z, float x2, float y2, float z2)
     {
         Vector2 ret;
-        Mathf.Rad2Deg * Mathf.Atan2(y, x);
+        ret.x = Mathf.Rad2Deg * Mathf.Atan2(z, x);
+        ret.y = Mathf.Rad2Deg * Mathf.Atan2(y, z);
     }
 }
