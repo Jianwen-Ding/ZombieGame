@@ -11,6 +11,7 @@ public class PlayerMainScript : MonoBehaviour
     public static GameObject solePlayer;
     [SerializeField]
     GameObject mainCamera;
+    Rigidbody rb;
     //scytheManagement
     [SerializeField]
     float scytheTimeNeeded;
@@ -49,7 +50,10 @@ public class PlayerMainScript : MonoBehaviour
     }
     // Start is called before the first frame update
     void Start()
-    {   //establish devices
+    {
+        //establish self
+        rb = gameObject.GetComponent<Rigidbody>();
+        //establish devices
         List<InputDevice> inputDevices = new List<InputDevice>();
         InputDevices.GetDevices(inputDevices);
         InputDeviceCharacteristics rightControllerChar = InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
@@ -98,10 +102,12 @@ public class PlayerMainScript : MonoBehaviour
         {
 
         }
-        rightContr.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-        if (triggerValue > 0.1f)
+        rightContr.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2DAxisValue);
+        if (primary2DAxisValue != Vector2.zero)
         {
-
+            CalcProgram.getAngle2D(primary2DAxisValue.x, primary2DAxisValue.y);
+            mainCamera.transform.rotation.x;
+            
         }
     }
 }
