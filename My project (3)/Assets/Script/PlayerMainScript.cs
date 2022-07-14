@@ -5,8 +5,8 @@ using UnityEngine.XR;
 public class PlayerMainScript : MonoBehaviour
 {
     //Devices
-    private InputDevice right;
-    private InputDevice left;
+    private InputDevice rightContr;
+    private InputDevice leftContr;
     //gameObject
     public static GameObject solePlayer;
     [SerializeField]
@@ -56,14 +56,14 @@ public class PlayerMainScript : MonoBehaviour
         InputDevices.GetDevicesWithCharacteristics(rightControllerChar, inputDevices);
         if(inputDevices.Count > 0)
         {
-            right = inputDevices[0];
+            rightContr = inputDevices[0];
         }
         InputDevices.GetDevices(inputDevices);
         InputDeviceCharacteristics leftControllerChar = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(leftControllerChar, inputDevices);
         if (inputDevices.Count > 0)
         {
-            left = inputDevices[0];
+            leftContr = inputDevices[0];
         }
 
         //establish sole player
@@ -86,8 +86,12 @@ public class PlayerMainScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        //Inputs/Movement
 
+        //Inputs/Movement
+        rightContr.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
+        if (primaryButtonValue)
+        {
+
+        }
     }
 }
