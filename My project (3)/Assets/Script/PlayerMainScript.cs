@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.XR;
 public class PlayerMainScript : MonoBehaviour
 {
+    //Devices
     
+    //gameObject
     public static GameObject solePlayer;
     [SerializeField]
     GameObject mainCamera;
 
+    //Health Varibles
     private int health;
     private int maxHealth;
     [SerializeField]
@@ -36,6 +39,14 @@ public class PlayerMainScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        var inputDevices = new List<UnityEngine.XR.InputDevice>();
+        InputDevices.GetDevices(inputDevices);
+        InputDeviceCharacteristics rightControllerChar = InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
+        InputDevices.GetDevicesWithCharacteristics(rightControllerChar, inputDevices);
+        foreach (var device in inputDevices)
+        {
+            Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
+        }
         bool foundOthers = false;
         GameObject[] otherObjects = GameObject.FindGameObjectsWithTag("Player");
         for (int x = 0; x < otherObjects.Length; x++)
