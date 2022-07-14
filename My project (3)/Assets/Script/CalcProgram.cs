@@ -4,9 +4,25 @@ using UnityEngine;
 
 public class CalcProgram : MonoBehaviour
 {
+    //uses degrees
     static public float getDist3D(float x, float y, float z)
     {
         return Mathf.Sqrt(x * x + y * y + z + z);
+    }
+    static public Vector2 getVectorFromAngle2D(float angle, float distance)
+    {
+        Vector2 ret;
+        ret.x = Mathf.Cos(angle * Mathf.Deg2Rad) * distance;
+        ret.y = Mathf.Sin(angle * Mathf.Deg2Rad) * distance;
+        return ret;
+    }
+    static public Vector3 getVectorFromAngle3D(float angleX, float angleY, float distance)
+    {
+        Vector3 ret;
+        ret.x = getVectorFromAngle2D(angleX, distance).x;
+        ret.y = getVectorFromAngle2D(angleX, distance).y;
+        ret.z = Mathf.Sin(angleY * Mathf.Deg2Rad) * distance;
+        return ret;
     }
     //Output is in degree
     static public float getAngle2D(float x, float y)
@@ -15,7 +31,6 @@ public class CalcProgram : MonoBehaviour
     }
     static public float getAngleDiffrence3D(float x, float y, float z, float x2, float y2, float z2)
     {
-        cos - 1[(a · b) / (| a | | b |) ].
 
     }
 }
