@@ -115,10 +115,10 @@ public class PlayerMainScript : MonoBehaviour
         }
         rightContr.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2DAxisValue);
         Debug.Log(primary2DAxisValue);
-        if (primary2DAxisValue != Vector2.zero)
+        if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) != Vector2.zero)
         {
-            float angle = CalcProgram.getAngle2D(primary2DAxisValue.x, primary2DAxisValue.y);
-            rb.velocity = new Vector3(CalcProgram.getVectorFromAngle2D(mainCamera.transform.rotation.x + angle,speed).x, CalcProgram.getVectorFromAngle2D(mainCamera.transform.rotation.x + angle, speed).y, rb.velocity.z);
+            float angle = CalcProgram.getAngle2D(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x, OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y);
+            rb.velocity = new Vector3(CalcProgram.getVectorFromAngle2D(mainCamera.transform.rotation.x + angle,speed).x, rb.velocity.y, CalcProgram.getVectorFromAngle2D(mainCamera.transform.rotation.x + angle, speed).y);
             
         }
     }
