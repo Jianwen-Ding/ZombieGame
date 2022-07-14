@@ -5,6 +5,10 @@ using UnityEngine;
 public class CalcProgram : MonoBehaviour
 {
     //uses degrees
+    static public float getDist2D(float x, float y)
+    {
+        return Mathf.Sqrt(x * x + y * y);
+    }
     static public float getDist3D(float x, float y, float z)
     {
         return Mathf.Sqrt(x * x + y * y + z + z);
@@ -27,10 +31,13 @@ public class CalcProgram : MonoBehaviour
     //Output is in degree
     static public float getAngle2D(float x, float y)
     {
-        return Mathf.Rad2Deg * Mathf.Atan(y / x);
+        return Mathf.Rad2Deg * Mathf.Atan2(y, x);
     }
-    static public float getAngleDiffrence3D(float x, float y, float z, float x2, float y2, float z2)
+    //angleX
+    //angleY
+    static public Vector2 getAngleDiffrence3D(float x, float y, float z, float x2, float y2, float z2)
     {
-
+        Vector2 ret;
+        Mathf.Rad2Deg * Mathf.Atan2(y, x);
     }
 }
