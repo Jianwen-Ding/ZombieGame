@@ -93,5 +93,15 @@ public class PlayerMainScript : MonoBehaviour
         {
 
         }
+        rightContr.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+        if (triggerValue > 0.1f)
+        {
+
+        }
+        rightContr.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+        if (triggerValue > 0.1f)
+        {
+
+        }
     }
 }
