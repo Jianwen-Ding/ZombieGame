@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class PlayerMainScript : MonoBehaviour
 {
+    public static GameObject solePlayer;
+    [SerializeField]
+    GameObject mainCamera;
+
     private int health;
     private int maxHealth;
+    [SerializeField]
     private float speed;
     public void damage(int damage)
     {
@@ -23,11 +28,27 @@ public class PlayerMainScript : MonoBehaviour
     {
         maxHealth = newMax;
     }
-    public void 
+    public int getMaxHeath()
+    {
+        return maxHealth;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        bool foundOthers = false;
+        GameObject[] otherObjects = GameObject.FindGameObjectsWithTag("Player");
+        for (int x = 0; x < otherObjects.Length; x++)
+        {
+            if (otherObjects[x] != gameObject)
+            {
+                foundOthers = true;
+                Destroy(gameObject);
+            }
+        }
+        if(foundOthers == false)
+        {
+            solePlayer = gameObject;
+        }
     }
 
     // Update is called once per frame
