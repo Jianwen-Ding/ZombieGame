@@ -11,7 +11,17 @@ public class PlayerMainScript : MonoBehaviour
     public static GameObject solePlayer;
     [SerializeField]
     GameObject mainCamera;
-
+    //scytheManagement
+    [SerializeField]
+    float scytheTimeNeeded;
+    [SerializeField]
+    GameObject rightScythe;
+    [SerializeField]
+    string rightScytheState;
+    [SerializeField]
+    GameObject leftScythe;
+    [SerializeField]
+    string leftScytheState;
     //Health Varibles
     private int health;
     private int maxHealth;
@@ -77,5 +87,7 @@ public class PlayerMainScript : MonoBehaviour
     void Update()
     {
         
+        //Inputs/Movement
+
     }
 }
