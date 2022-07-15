@@ -1884,7 +1884,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4191347363392067969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.047113806, y: 6.62, z: -3.53}
+  m_LocalPosition: {x: 0.03, y: 6.62, z: -2.42}
   m_LocalScale: {x: 200, y: 200, z: 200}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1945,8 +1945,6 @@ GameObject:
   - component: {fileID: 820502684}
   - component: {fileID: 4191347363392067971}
   - component: {fileID: 4191347363392067970}
-  - component: {fileID: 4191347363392067973}
-  - component: {fileID: 4191347363392067972}
   m_Layer: 6
   m_Name: Scythe
   m_TagString: Untagged
@@ -1954,24 +1952,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4191347363392067970
-MonoBehaviour:
+--- !u!64 &4191347363392067970
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4191347363392067969}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0e554b9f9573684eb62b64667ebed50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collide: {fileID: 4191347363392067973}
-  scytheState: flying
-  zAxisRotateOnRelease: 0
-  xAxisChange: 0
-  speedToSpinRatio: 100
-  rotationDebug: 0
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: 35189c913f2ab7a44833ac4a9a647ccc, type: 3}
 --- !u!114 &4191347363392067971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1986,36 +1980,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_allowOffhandGrab: 1
   m_snapPosition: 1
-  m_snapOrientation: 0
+  m_snapOrientation: 1
   m_snapOffset: {fileID: 0}
   m_grabPoints:
-  - {fileID: 4191347363392067972}
---- !u!65 &4191347363392067972
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4191347363392067969}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.000697204, y: 0.009091677, z: 0.00964438}
-  m_Center: {x: 0.00000025931746, y: -0.0009152296, z: -0.005579001}
---- !u!65 &4191347363392067973
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4191347363392067969}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.000697204, y: 0.015388396, z: 0.024715804}
-  m_Center: {x: 0.00000025930058, y: 0.0022331264, z: -0.003643882}
+  - {fileID: 4191347363392067970}
 --- !u!33 &8908267172629717493
 MeshFilter:
   m_ObjectHideFlags: 0
