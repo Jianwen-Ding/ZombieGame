@@ -5,6 +5,7 @@ using UnityEngine;
 public class ScytheState : MonoBehaviour
 {
     //establish
+    [SerializeField]
     BoxCollider collide;
     OVRGrabbable grab;
     Rigidbody rb;
@@ -35,18 +36,17 @@ public class ScytheState : MonoBehaviour
     void Start()
     {
         //establish
-        collide = gameObject.GetComponent<BoxCollider>();
         rb = gameObject.GetComponent<Rigidbody>();
         grab = gameObject.GetComponent<OVRGrabbable>();
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(scytheState == "flying" && other.gameObject.tag != "Hands")
+        /*if(scytheState == "flying" && other.gameObject.layer != 7)
         {
             gameObject.transform.parent = other.gameObject.transform;
             scytheState = "stuck";
             rb.velocity = Vector3.zero;
-        }
+        }*/
         
     }
     // Update is called once per frame
@@ -56,7 +56,6 @@ public class ScytheState : MonoBehaviour
         {
             scytheState = "grabbed";
             gameObject.transform.parent = null;
-            collide.isTrigger = false;
         }
        if(scytheState == "grabbed")
         {
@@ -68,7 +67,6 @@ public class ScytheState : MonoBehaviour
         }
        if(scytheState == "flying")
         {
-            collide.isTrigger = true;
             rb.useGravity = false;
             float speed = Mathf.Abs(CalcProgram.getDist3D(rb.velocity.x , rb.velocity.y, rb.velocity.z));
             xAxisChange += speed * speedToSpinRatio * Time.deltaTime;
