@@ -92,7 +92,7 @@ public class PlayerMainScript : MonoBehaviour
         if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) != Vector2.zero)
         {
             float sideWaysAngle = CalcProgram.getAngleBetweenPoints2D(cam.rightEyeAnchor.position.x, cam.rightEyeAnchor.position.z, cam.leftEyeAnchor.position.x, cam.leftEyeAnchor.position.z);
-            sideWaysAngle += 180;
+            sideWaysAngle += 160;
             float angle = CalcProgram.getAngle2D(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x, OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y);
             rb.velocity = new Vector3(CalcProgram.getVectorFromAngle2D(angle + sideWaysAngle, speed).x, rb.velocity.y, CalcProgram.getVectorFromAngle2D(angle + sideWaysAngle, speed).y);
 
