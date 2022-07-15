@@ -638,7 +638,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -652,11 +652,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4191347363392067969}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.000697204, y: 0.024702579, z: 0.029103434}
-  m_Center: {x: 0.00000025931746, y: 0.0032215798, z: -0.0014500857}
+  m_Size: {x: 0.0025074228, y: 0.024702579, z: 0.029103434}
+  m_Center: {x: 0.00090536906, y: 0.0032215798, z: -0.0014500857}
 --- !u!1 &892549683
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,7 +995,7 @@ GameObject:
   - component: {fileID: 1159185592}
   m_Layer: 0
   m_Name: LeftHandAnchor
-  m_TagString: Untagged
+  m_TagString: Hands
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1049,7 +1049,7 @@ MonoBehaviour:
   - {fileID: 1159185591}
   m_controller: 1
   m_parentTransform: {fileID: 0}
-  m_player: {fileID: 0}
+  m_player: {fileID: 1798253778}
 --- !u!54 &1159185593
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1215,7 +1215,7 @@ GameObject:
   - component: {fileID: 1630445039}
   m_Layer: 0
   m_Name: RightHandAnchor
-  m_TagString: Untagged
+  m_TagString: Hands
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1429,7 +1429,7 @@ GameObject:
   - component: {fileID: 1798253779}
   - component: {fileID: 1798253781}
   - component: {fileID: 1798253780}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerController
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1444,7 +1444,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798253778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 8, z: 0}
+  m_LocalPosition: {x: 0, y: 8.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1725982594}
@@ -1468,7 +1468,7 @@ MonoBehaviour:
   rightScytheState: 
   leftScythe: {fileID: 0}
   leftScytheState: 
-  speed: 5
+  speed: 1
 --- !u!54 &1798253781
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1782,8 +1782,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4191347363392067969}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0.743, y: 7.13, z: -2.77}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.047113806, y: 6.62, z: -4.95}
   m_LocalScale: {x: 200, y: 200, z: 200}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1844,13 +1844,31 @@ GameObject:
   - component: {fileID: 820502684}
   - component: {fileID: 820502685}
   - component: {fileID: 4191347363392067971}
-  m_Layer: 0
-  m_Name: Cube (1)
+  - component: {fileID: 4191347363392067970}
+  m_Layer: 6
+  m_Name: Scythe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4191347363392067970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191347363392067969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0e554b9f9573684eb62b64667ebed50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scytheState: flying
+  zAxisRotateOnRelease: 0
+  xAxisChange: 0
+  speedToSpinRatio: 100
+  rotationDebug: 0
 --- !u!114 &4191347363392067971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1864,11 +1882,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_allowOffhandGrab: 1
-  m_snapPosition: 0
+  m_snapPosition: 1
   m_snapOrientation: 0
   m_snapOffset: {fileID: 0}
   m_grabPoints:
-  - {fileID: 0}
+  - {fileID: 820502685}
 --- !u!33 &8908267172629717493
 MeshFilter:
   m_ObjectHideFlags: 0
