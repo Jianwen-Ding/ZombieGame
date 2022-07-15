@@ -5,10 +5,6 @@ using UnityEngine.XR;
 public class PlayerMainScript : MonoBehaviour
 {
     //Devices
-    [SerializeField]
-    InputDevice rightContr;
-    [SerializeField]
-    InputDevice leftContr;
     //gameObject
     public static GameObject solePlayer;
     [SerializeField]
@@ -55,30 +51,7 @@ public class PlayerMainScript : MonoBehaviour
     {
         //establish self
         rb = gameObject.GetComponent<Rigidbody>();
-        //establish devices
-        List<InputDevice> inputDevices = new List<InputDevice>();
-        InputDevices.GetDevices(inputDevices);
-        InputDeviceCharacteristics rightControllerChar = InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
-        InputDevices.GetDevicesWithCharacteristics(rightControllerChar, inputDevices);
-        if(inputDevices.Count > 0)
-        {
-            rightContr = inputDevices[0];
-        }
-        foreach (var device in inputDevices)
-        {
-            Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
-        }
-        InputDevices.GetDevices(inputDevices);
-        InputDeviceCharacteristics leftControllerChar = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
-        InputDevices.GetDevicesWithCharacteristics(leftControllerChar, inputDevices);
-        if (inputDevices.Count > 0)
-        {
-            leftContr = inputDevices[0];
-        }
-        foreach (var device in inputDevices)
-        {
-            Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
-        }
+
         //establish sole player
         bool foundOthers = false;
         GameObject[] otherObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -99,22 +72,14 @@ public class PlayerMainScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(rightContr);
-        //Inputs/Movement
-        rightContr.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
-        Debug.Log(primaryButtonValue);
-        if (primaryButtonValue)
+        if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
         {
 
         }
-        rightContr.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-        Debug.Log(triggerValue);
-        if (triggerValue > 0.1f)
+        if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
         {
 
         }
-        rightContr.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2DAxisValue);
-        Debug.Log(primary2DAxisValue);
         if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) != Vector2.zero)
         {
             float angle = CalcProgram.getAngle2D(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x, OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y);
