@@ -45,12 +45,13 @@ public class ScytheGrab : MonoBehaviour
     {
         if (debugBool)
         {
-            designatedScythe.transform.position = new Vector3(contTransform.position.x + scytheOffset.x, contTransform.position.y + scytheOffset.y, contTransform.position.z + scytheOffset.z);
-            designatedScythe.transform.localRotation = Quaternion.Euler(contTransform.localRotation.x + scytheAngle.x, contTransform.localRotation.y + scytheAngle.y, contTransform.localRotation.z + scytheAngle.z);
+            Rigidbody grabbedRigidbody = gameObject.GetComponent<Rigidbody>();
+            Quaternion rotationOffset = Quaternion.Euler(scytheAngle);
+            Vector3 grabbablePosition = scytheOffset + rotationOffset * contTransform.localPosition;
+            Quaternion grabbableRotation = contTransform.localRotation * rotationOffset;
+            grabbedRigidbody.transform.position = grabbablePosition;
+            grabbedRigidbody.transform.rotation = grabbableRotation;
             designatedScythe.transform.parent = gameObject.transform;
-            designatedScythe.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            designatedScythe.GetComponent<Rigidbody>().freezeRotation = true;
-            designatedScythe.GetComponent<Rigidbody>().useGravity = false;
             scytheGrabbed = true;
         }
         if (scytheGrabbed == false)
@@ -70,15 +71,7 @@ public class ScytheGrab : MonoBehaviour
             }
         }
         else
-        {
-            if (scytheGrabbed == false)
-            {
-                return;
-            }
-
-            Rigidbody grabbedRigidbody = designatedScythe.GetComponent<Rigidbody>();
-            Quaternion grabbableRotation = Quaternion.Euler(scytheAngle) * contTransform.localRotation;
-            grabbedRigidbody.transform.rotation = grabbableRotation;
+        {            
             if (hasTapped == false && (rightHand && OVRInput.Get(OVRInput.Button.Two) && OVRInput.Get(OVRInput.Button.One) || rightHand == false && OVRInput.Get(OVRInput.Button.Three) && OVRInput.Get(OVRInput.Button.Four)))
             {
                 /*OVRPose localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(m_controller), orientation = OVRInput.GetLocalControllerRotation(m_controller) };
