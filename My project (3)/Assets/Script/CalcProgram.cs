@@ -33,6 +33,13 @@ public class CalcProgram : MonoBehaviour
     {
         return Mathf.Rad2Deg * Mathf.Atan2(y, x);
     }
+    static public float getAngleBetweenPoints2D(float x, float y, float x2, float y2)
+    {
+        float xDif = x2 - x;
+        float yDif = y2 - y;
+        return getAngle2D(xDif, yDif);
+        
+    }
     //angleX
     //angleY
     static public Vector2 getAngleDiffrence3D(float x, float y, float z, float x2, float y2, float z2)

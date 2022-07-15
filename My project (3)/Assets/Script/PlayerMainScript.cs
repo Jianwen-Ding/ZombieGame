@@ -5,10 +5,10 @@ using UnityEngine.XR;
 public class PlayerMainScript : MonoBehaviour
 {
     //Devices
+    OVRCameraRig cam = null;
     //gameObject
     public static GameObject solePlayer;
-    [SerializeField]
-    GameObject mainCamera;
+
     Rigidbody rb;
     //scytheManagement
     [SerializeField]
@@ -49,6 +49,15 @@ public class PlayerMainScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //establish camera
+        OVRCameraRig[] CameraRigs = gameObject.GetComponentsInChildren<OVRCameraRig>();
+
+        if (CameraRigs.Length == 0)
+            Debug.LogWarning("OVRPlayerController: No OVRCameraRig attached.");
+        else if (CameraRigs.Length > 1)
+            Debug.LogWarning("OVRPlayerController: More then 1 OVRCameraRig attached.");
+        else
+            cam = CameraRigs[0];
         //establish self
         rb = gameObject.GetComponent<Rigidbody>();
 
@@ -82,11 +91,13 @@ public class PlayerMainScript : MonoBehaviour
         }
         if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) != Vector2.zero)
         {
+            float sideWaysAngle = CalcProgram.getAngleBetweenPoints2D(cam.rightEyeAnchor.position.x, cam.rightEyeAnchor.position.z, cam.leftEyeAnchor.position.x, cam.leftEyeAnchor.position.z);
+            sideWaysAngle += 180;
             float angle = CalcProgram.getAngle2D(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x, OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y);
-            rb.velocity = new Vector3(CalcProgram.getVectorFromAngle2D(mainCamera.transform.rotation.x + angle, speed).x, rb.velocity.y, CalcProgram.getVectorFromAngle2D(mainCamera.transform.rotation.x + angle, speed).y);
+            rb.velocity = new Vector3(CalcProgram.getVectorFromAngle2D(angle + sideWaysAngle, speed).x, rb.velocity.y, CalcProgram.getVectorFromAngle2D(angle + sideWaysAngle, speed).y);
 
         }
         //Establishing controllers
-
+        
     }
 }

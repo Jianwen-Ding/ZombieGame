@@ -24,20 +24,25 @@ public class CameraFollower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.position = new Vector3(CameraRig.centerEyeAnchor.position.x, CameraRig.centerEyeAnchor.position.y - distanceBelow, CameraRig.centerEyeAnchor.position.z);
+        if(CameraRig != null)
+        {
+            gameObject.transform.position = new Vector3(CameraRig.centerEyeAnchor.position.x, CameraRig.centerEyeAnchor.position.y - distanceBelow, CameraRig.centerEyeAnchor.position.z);
+        }
     }
     protected virtual void UpdateController()
     {
-
-        var p = CameraRig.transform.localPosition;
-        if (OVRManager.instance.trackingOriginType == OVRManager.TrackingOrigin.EyeLevel)
+        if(CameraRig != null)
         {
-            p.y = OVRManager.profile.eyeHeight - (distanceBelow) + gameObject.transform.position.y;
+            var p = CameraRig.transform.localPosition;
+            if (OVRManager.instance.trackingOriginType == OVRManager.TrackingOrigin.EyeLevel)
+            {
+                p.y = OVRManager.profile.eyeHeight - (distanceBelow) + gameObject.transform.position.y;
+            }
+            else if (OVRManager.instance.trackingOriginType == OVRManager.TrackingOrigin.FloorLevel)
+            {
+                p.y = -(distanceBelow) + gameObject.transform.position.y;
+            }
+            CameraRig.transform.localPosition = p;
         }
-        else if (OVRManager.instance.trackingOriginType == OVRManager.TrackingOrigin.FloorLevel)
-        {
-            p.y = -(distanceBelow) + gameObject.transform.position.y;
-        }
-        CameraRig.transform.localPosition = p;
     }
 }
