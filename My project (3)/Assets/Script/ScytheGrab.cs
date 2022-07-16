@@ -4,28 +4,40 @@ using UnityEngine;
 
 public class ScytheGrab : MonoBehaviour
 {
+    
     [SerializeField]
     bool debugBool;
     bool hasTapped;
+    //establish
     [SerializeField]
     bool rightHand;
     [SerializeField]
     Transform contTransform;
+    //Offset
     [SerializeField]
     Vector3 scytheOffset;
     [SerializeField]
     Vector3 scytheAngle;
-    float zAngleOffSet;
     [SerializeField]
     GameObject designatedScythe;
+    //grab var
+    Vector3 lastPos;
+    Quaternion lastRot;
     bool scytheCurrentlyInRange;
     bool scytheGrabbed;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        lastPos = transform.position;
+        lastRot = transform.rotation;
     }
-    void OnTriggerEnter(Collider otherCollider)
+    void OnUpdatedAnchors()
+    {
+        lastPos = transform.position;
+        lastRot = transform.rotation;
+    }
+        void OnTriggerEnter(Collider otherCollider)
     {
         if(otherCollider.gameObject == designatedScythe)
         {
@@ -45,42 +57,69 @@ public class ScytheGrab : MonoBehaviour
     {
         if (debugBool)
         {
+            designatedScythe.transform.position = contTransform.position;
             Rigidbody grabbedRigidbody = gameObject.GetComponent<Rigidbody>();
-            Quaternion rotationOffset = Quaternion.Euler(scytheAngle);
-            Vector3 grabbablePosition = scytheOffset + rotationOffset * contTransform.localPosition;
-            Quaternion grabbableRotation = contTransform.localRotation * rotationOffset;
+            Vector3 grabbablePosition = lastPos + lastRot * contTransform.localPosition;
+            Quaternion grabbableRotation = lastRot * contTransform.localRotation;
             grabbedRigidbody.transform.position = grabbablePosition;
             grabbedRigidbody.transform.rotation = grabbableRotation;
             designatedScythe.transform.parent = gameObject.transform;
+            designatedScythe.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            designatedScythe.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             scytheGrabbed = true;
         }
         if (scytheGrabbed == false)
         {
             if (scytheCurrentlyInRange)
             {
-                if (hasTapped == false && (rightHand && OVRInput.Get(OVRInput.Button.Two) && OVRInput.Get(OVRInput.Button.One) || rightHand == false && OVRInput.Get(OVRInput.Button.Three) && OVRInput.Get(OVRInput.Button.Four)))
+                if (rightHand && OVRInput.Get(OVRInput.Button.Two) && OVRInput.Get(OVRInput.Button.One) || rightHand == false && OVRInput.Get(OVRInput.Button.Three) && OVRInput.Get(OVRInput.Button.Four))
                 {
-                    designatedScythe.transform.position = new Vector3(contTransform.position.x + scytheOffset.x, contTransform.position.y + scytheOffset.y, contTransform.position.z + scytheOffset.z);
-                    designatedScythe.transform.rotation = Quaternion.Euler(contTransform.rotation.x + scytheAngle.x, contTransform.rotation.y + scytheAngle.y, contTransform.rotation.z + scytheAngle.z);
-                    designatedScythe.transform.parent = gameObject.transform;
-                    designatedScythe.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    designatedScythe.GetComponent<Rigidbody>().freezeRotation = true;
-                    designatedScythe.GetComponent<Rigidbody>().useGravity = false;
-                    scytheGrabbed = true;
+                    if (hasTapped == false)
+                    {
+                        designatedScythe.transform.position = contTransform.position;
+                        Rigidbody grabbedRigidbody = gameObject.GetComponent<Rigidbody>();
+                        Vector3 grabbablePosition = lastPos + lastRot * contTransform.localPosition;
+                        Quaternion grabbableRotation = lastRot * contTransform.localRotation;
+                        grabbedRigidbody.transform.position = grabbablePosition;
+                        grabbedRigidbody.transform.rotation = grabbableRotation;
+                        designatedScythe.transform.parent = gameObject.transform;
+                        designatedScythe.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        designatedScythe.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                        scytheGrabbed = true;
+                        designatedScythe.GetComponent<ScytheState>().establishGrab();
+                    }
+                    hasTapped = true;
+                }
+                else
+                {
+                    hasTapped = false;
                 }
             }
         }
         else
-        {            
-            if (hasTapped == false && (rightHand && OVRInput.Get(OVRInput.Button.Two) && OVRInput.Get(OVRInput.Button.One) || rightHand == false && OVRInput.Get(OVRInput.Button.Three) && OVRInput.Get(OVRInput.Button.Four)))
+        {
+            designatedScythe.transform.position = contTransform.position;
+            Rigidbody grabbedRigidbody = gameObject.GetComponent<Rigidbody>();
+            Vector3 grabbablePosition = lastPos + lastRot * contTransform.localPosition;
+            Quaternion grabbableRotation = lastRot * contTransform.localRotation;
+            grabbedRigidbody.transform.position = grabbablePosition;
+            grabbedRigidbody.transform.rotation = grabbableRotation;
+            designatedScythe.transform.parent = gameObject.transform;
+            designatedScythe.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            designatedScythe.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            if (rightHand && OVRInput.Get(OVRInput.Button.Two) && OVRInput.Get(OVRInput.Button.One) || rightHand == false && OVRInput.Get(OVRInput.Button.Three) && OVRInput.Get(OVRInput.Button.Four))
+                {
+                if (hasTapped == false)
+                {
+                    designatedScythe.GetComponent<ScytheState>().endGrab();
+                    designatedScythe.transform.parent = null;
+                    scytheGrabbed = false;
+                }
+                hasTapped = true;
+            }
+            else
             {
-                /*OVRPose localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(m_controller), orientation = OVRInput.GetLocalControllerRotation(m_controller) };
-                OVRPose offsetPose = new OVRPose { position = m_anchorOffsetPosition, orientation = m_anchorOffsetRotation };
-                localPose = localPose * offsetPose;
-
-                OVRPose trackingSpace = transform.ToOVRPose() * localPose.Inverse();
-                Vector3 linearVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerVelocity(m_controller);
-                Vector3 angularVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerAngularVelocity(m_controller);*/
+                hasTapped = false;
             }
         }
         if (rightHand && OVRInput.Get(OVRInput.Button.Two) && OVRInput.Get(OVRInput.Button.One) || rightHand == false && OVRInput.Get(OVRInput.Button.Three) && OVRInput.Get(OVRInput.Button.Four))

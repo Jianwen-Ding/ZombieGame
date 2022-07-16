@@ -471,7 +471,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60599441cecfbde49ac16cc55ad735ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugBool: 1
+  debugBool: 0
   rightHand: 1
   contTransform: {fileID: 359883657}
   scytheOffset: {x: 0, y: 0, z: 0}
@@ -1874,7 +1874,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4191347363392067969}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.007861829, y: 0.015388397, z: 0.024715804}

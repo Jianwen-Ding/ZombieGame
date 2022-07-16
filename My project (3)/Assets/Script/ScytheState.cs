@@ -32,6 +32,14 @@ public class ScytheState : MonoBehaviour
     float rotationDebug;
     //stuck scytheState
     GameObject stabbedObject;
+    public void establishGrab()
+    {
+        scytheState = "grabbed";
+    }
+    public void endGrab()
+    {
+        scytheState = "flying";
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -41,12 +49,12 @@ public class ScytheState : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        /*if(scytheState == "flying" && other.gameObject.layer != 7)
+        if(scytheState == "flying" && other.gameObject.layer != 7)
         {
             gameObject.transform.parent = other.gameObject.transform;
             scytheState = "stuck";
             rb.velocity = Vector3.zero;
-        }*/
+        }
         
     }
     // Update is called once per frame
