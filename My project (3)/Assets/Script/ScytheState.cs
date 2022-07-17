@@ -7,9 +7,9 @@ public class ScytheState : MonoBehaviour
     //establish
     [SerializeField]
     BoxCollider collide;
-    OVRGrabbable grab;
+    GameObject grabbedBy;
     Rigidbody rb;
-    bool isRight;
+   
     
     //States
     //"grabbed"
@@ -22,6 +22,8 @@ public class ScytheState : MonoBehaviour
     bool hasCharged;
     //flying scytheState
     //
+    Quaternion rotFly;
+    Vector3 posFly;
     [SerializeField]
     float zAxisRotateOnRelease;
     [SerializeField]
@@ -32,59 +34,35 @@ public class ScytheState : MonoBehaviour
     float rotationDebug;
     //stuck scytheState
     GameObject stabbedObject;
+    public void establishGrabbedBy(GameObject establish)
+    {
+        grabbedBy = establish;
+    }
     public void establishGrab()
     {
         scytheState = "grabbed";
     }
-    public void endGrab()
+    public void endGrab(Vector3 linearVelocity, Vector3 angularVelocity)
     {
         scytheState = "flying";
+        rb.velocity = linearVelocity;
+        rb.angularVelocity = angularVelocity;
     }
     // Start is called before the first frame update
     void Start()
     {
-        //establish
         rb = gameObject.GetComponent<Rigidbody>();
-        grab = gameObject.GetComponent<OVRGrabbable>();
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(scytheState == "flying" && other.gameObject.layer != 7)
-        {
-            gameObject.transform.parent = other.gameObject.transform;
-            scytheState = "stuck";
-            rb.velocity = Vector3.zero;
-        }
         
     }
     // Update is called once per frame
     void Update()
     {
-       if(grab.grabbedBy != null)
+        if(scytheState == "flying")
         {
-            scytheState = "grabbed";
-            gameObject.transform.parent = null;
         }
-       if(scytheState == "grabbed")
-        {
-            rb.useGravity = true;
-            if(grab.grabbedBy == null)
-            {
-                scytheState = "flying";
-            }
-        }
-       if(scytheState == "flying")
-        {
-            rb.useGravity = false;
-            float speed = Mathf.Abs(CalcProgram.getDist3D(rb.velocity.x , rb.velocity.y, rb.velocity.z));
-            xAxisChange += speed * speedToSpinRatio * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(xAxisChange, transform.rotation.y, zAxisRotateOnRelease);
-            
-            
-        }
-        if (scytheState == "stuck")
-        {
-            rb.velocity = Vector3.zero;
-        }
+        
     }
 }
