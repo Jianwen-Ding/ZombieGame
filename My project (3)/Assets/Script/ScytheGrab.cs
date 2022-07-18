@@ -5,13 +5,16 @@ using UnityEngine;
 public class ScytheGrab : MonoBehaviour
 {
     
-    //Debug
+    #region debug
     [SerializeField]
     bool debugBool;
     [SerializeField]
     bool debugRelease;
     bool hasTapped;
-    //establish
+    #endregion
+    #region establish
+    [SerializeField]
+    LineRenderer line;
     [SerializeField]
     bool rightHand;
     [SerializeField]
@@ -19,46 +22,80 @@ public class ScytheGrab : MonoBehaviour
     [SerializeField]
     GameObject designatedScythe;
     ScytheState designatedState;
-    //Offset
+    [SerializeField]
+    OVRCameraRig camRig;
+    [SerializeField]
+    GameObject mainController;
+    [SerializeField]
+    isInCollision checkCol;
+    #endregion
+    #region 
     [SerializeField]
     Vector3 scytheOffset;
     [SerializeField]
     Vector3 scytheAngle;
-    //grab var
-    Vector3 lastPos;
-    Quaternion lastRot;
+    #endregion
+    #region grab var
+    [SerializeField]
     bool scytheCurrentlyInRange;
+    [SerializeField]
     bool scytheGrabbed;
-    //release var
-    Vector3 scythePos;
-    Quaternion scytheRot;
+    #endregion
+    #region release var
+    [SerializeField]
     Vector3 anchorOffsetPosition;
+    [SerializeField]
     Quaternion anchorOffsetRotation;
+    #endregion
+    #region line
+    [SerializeField]
+    float lineUpAdjust;
+    #endregion
+    #region slash
+    [SerializeField]
+    Material unchargedMat;
+
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
-        lastPos = transform.position;
-        lastRot = transform.rotation;
-        if(designatedScythe != null)
+        line = gameObject.GetComponent<LineRenderer>();
+        line.positionCount = 2;
+        if (designatedScythe != null)
         {
-            scythePos = designatedScythe.transform.localPosition;
-            scytheRot = designatedScythe.transform.localRotation;
             designatedState = designatedScythe.GetComponent<ScytheState>();
             designatedState.establishGrabbedBy(gameObject);
         }
        
     }
+    protected virtual void Awake()
+    {
+        OVRCameraRig[] CameraRigs = gameObject.GetComponentsInParent<OVRCameraRig>();
+
+        if (CameraRigs.Length == 0)
+            Debug.LogWarning("OVRPlayerController: No OVRCameraRig attached.");
+        else if (CameraRigs.Length > 1)
+            Debug.LogWarning("OVRPlayerController: More then 1 OVRCameraRig attached.");
+        else
+            camRig = CameraRigs[0];
+        checkCol = GameObject.FindGameObjectWithTag("PlayerCollider").GetComponent<isInCollision>();
+        anchorOffsetPosition = contTransform.localPosition;
+        anchorOffsetRotation = contTransform.localRotation;
+        camRig.UpdatedAnchors += (r) => { OnUpdatedAnchors(); };
+    }
     void OnUpdatedAnchors()
     {
-        lastPos = transform.position;
-        lastRot = transform.rotation;
         if (scytheGrabbed)
         {
-            scythePos = designatedScythe.transform.position;
-            scytheRot = designatedScythe.transform.rotation;
+            designatedScythe.transform.position = scytheOffset + contTransform.position;
+            designatedScythe.transform.rotation = contTransform.rotation;
+            designatedScythe.transform.Rotate(scytheAngle);
         }
     }
-        void OnTriggerEnter(Collider otherCollider)
+
+
+    void OnTriggerEnter(Collider otherCollider)
     {
         if(otherCollider.gameObject == designatedScythe)
         {
@@ -78,16 +115,6 @@ public class ScytheGrab : MonoBehaviour
     {
         if (debugBool)
         {
-            Quaternion angleOffSet = Quaternion.Euler(scytheAngle);
-            designatedScythe.transform.position = scytheOffset + contTransform.position;
-            Rigidbody grabbedRigidbody = gameObject.GetComponent<Rigidbody>();
-            Vector3 grabbablePosition = lastPos + lastRot * contTransform.localPosition;
-            Quaternion grabbableRotation = lastRot * (angleOffSet * contTransform.localRotation);
-            grabbedRigidbody.transform.position = grabbablePosition;
-            grabbedRigidbody.transform.rotation = grabbableRotation;
-            designatedScythe.transform.parent = gameObject.transform;
-            designatedScythe.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            designatedScythe.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             scytheGrabbed = true;
             debugBool = false;
         }
@@ -99,22 +126,25 @@ public class ScytheGrab : MonoBehaviour
         }
         if (scytheGrabbed == false)
         {
+            /*line.SetPosition(0, new Vector3(contTransform.position.x, contTransform.position.y + lineUpAdjust, contTransform.position.z));
+            line.SetPosition(1, designatedScythe.transform.position);*/
+
+            if ((rightHand && OVRInput.Get(OVRInput.Button.SecondaryThumbstick) || rightHand == false && OVRInput.Get(OVRInput.Button.PrimaryThumbstick)))
+            {
+                designatedScythe.transform.parent = null;
+                mainController.transform.position = designatedScythe.transform.position;
+                scytheGrabbed = true;
+                if (designatedScythe.GetComponent<ScytheState>() != null)
+                {
+                    designatedState.establishGrab();
+                }
+            }
             if (scytheCurrentlyInRange)
             {
                 if (rightHand && OVRInput.Get(OVRInput.Button.Two) && OVRInput.Get(OVRInput.Button.One) || rightHand == false && OVRInput.Get(OVRInput.Button.Three) && OVRInput.Get(OVRInput.Button.Four))
                 {
                     if (hasTapped == false)
                     {
-                        Quaternion angleOffSet = Quaternion.Euler(scytheAngle);
-                        designatedScythe.transform.position =  scytheOffset + contTransform.position;
-                        Rigidbody grabbedRigidbody = gameObject.GetComponent<Rigidbody>();
-                        Vector3 grabbablePosition = lastPos + lastRot * contTransform.localPosition;
-                        Quaternion grabbableRotation = lastRot * (angleOffSet * contTransform.localRotation);
-                        grabbedRigidbody.transform.position = grabbablePosition;
-                        grabbedRigidbody.transform.rotation = grabbableRotation;
-                        designatedScythe.transform.parent = gameObject.transform;
-                        designatedScythe.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                        designatedScythe.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                         scytheGrabbed = true;
                         if(designatedScythe.GetComponent<ScytheState>() != null)
                         {
@@ -132,7 +162,8 @@ public class ScytheGrab : MonoBehaviour
         }
         else
         {
-            bool hasReleased = false;
+            line.SetPosition(0, Vector3.zero);
+            line.SetPosition(1, Vector3.zero);
             if (rightHand && OVRInput.Get(OVRInput.Button.Two) && OVRInput.Get(OVRInput.Button.One) || rightHand == false && OVRInput.Get(OVRInput.Button.Three) && OVRInput.Get(OVRInput.Button.Four))
             {
                 if (hasTapped == false)
@@ -141,8 +172,7 @@ public class ScytheGrab : MonoBehaviour
                     OVRPose offsetPose;
                     Vector3 linearVelocity;
                     Vector3 angularVelocity;
-                    designatedScythe.transform.localPosition = scytheOffset + contTransform.transform.localPosition;
-                    designatedScythe.transform.localRotation = contTransform.transform.localRotation;
+
                     if (rightHand)
                     {
                         localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch), orientation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch) };
@@ -165,21 +195,7 @@ public class ScytheGrab : MonoBehaviour
                     {
                         designatedScythe.GetComponent<ScytheState>().endGrab(linearVelocity, angularVelocity);
                     }
-                    designatedScythe.transform.parent = null;
-                    hasReleased = true;
                     scytheGrabbed = false;
-                    /*Quaternion angleOffSet = Quaternion.Euler(scytheAngle);
-                    designatedScythe.transform.localPosition = scytheOffset + designatedScythe.transform.localPosition;
-                    designatedScythe.transform.localRotation = designatedScythe.transform.localRotation;
-                    designatedScythe.transform.Rotate(scytheAngle);
-                    Rigidbody grabbedRigidbody = designatedScythe.GetComponent<Rigidbody>();
-                    Vector3 grabbablePosition = scythePos + scytheRot * designatedScythe.transform.localPosition;
-                    Quaternion grabbableRotation = scytheRot * (angleOffSet * designatedScythe.transform.localRotation);
-                    grabbedRigidbody.transform.position = grabbablePosition;
-                    grabbedRigidbody.transform.rotation = grabbableRotation;
-                    grabbedRigidbody.velocity = Vector3.zero;
-                    grabbedRigidbody.angularVelocity = Vector3.zero;
-                    */
                 }
                 hasTapped = true;
             }
@@ -187,20 +203,7 @@ public class ScytheGrab : MonoBehaviour
             {
                 hasTapped = false;
             }
-            if (hasReleased == false)
-            {
-                Quaternion angleOffSet = Quaternion.Euler(scytheAngle);
-                designatedScythe.transform.localPosition = scytheOffset + contTransform.localPosition;
-                designatedScythe.transform.localRotation = contTransform.localRotation;
-                designatedScythe.transform.Rotate(scytheAngle);
-                Rigidbody grabbedRigidbody = gameObject.GetComponent<Rigidbody>();
-                Vector3 grabbablePosition = lastPos + lastRot * contTransform.localPosition;
-                Quaternion grabbableRotation = lastRot * (angleOffSet * contTransform.localRotation);
-                grabbedRigidbody.transform.position = grabbablePosition;
-                grabbedRigidbody.transform.rotation = grabbableRotation;
-                designatedScythe.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                designatedScythe.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-            }
+            OnUpdatedAnchors();
         }
     }
 }

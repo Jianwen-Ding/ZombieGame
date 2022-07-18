@@ -13,6 +13,10 @@ public class CalcProgram : MonoBehaviour
     {
         return Mathf.Sqrt(x * x + y * y + z + z);
     }
+    static public float getDist3D(Vector3 point)
+    {
+        return Mathf.Sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
+    }
     static public Vector2 getVectorFromAngle2D(float angle, float distance)
     {
         Vector2 ret;
@@ -26,6 +30,13 @@ public class CalcProgram : MonoBehaviour
         ret.x = getVectorFromAngle2D(angleX, distance).x;
         ret.y = getVectorFromAngle2D(angleX, distance).y;
         ret.z = Mathf.Sin(angleY * Mathf.Deg2Rad) * distance;
+        return ret;
+    }
+    static public Vector2 DegreesFromVector(Vector3 angle)
+    {
+        Vector2 ret;
+        ret.x = getAngle2D(angle.x, angle.z);
+        ret.y = getAngle2D(angle.z, angle.y);
         return ret;
     }
     //Output is in degree

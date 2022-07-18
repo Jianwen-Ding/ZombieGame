@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.SceneManagement;
 public class PlayerMainScript : MonoBehaviour
 {
     //Devices
@@ -83,11 +84,7 @@ public class PlayerMainScript : MonoBehaviour
     {
         if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
         {
-
-        }
-        if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
-        {
-
+            SceneManager.LoadScene("SampleScene");
         }
         if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) != Vector2.zero)
         {
