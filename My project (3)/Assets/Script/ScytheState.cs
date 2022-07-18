@@ -49,6 +49,7 @@ public class ScytheState : MonoBehaviour
     }
     public void establishGrab()
     {
+        rb.isKinematic = true;
         scytheState = "grabbed";
         gameObject.transform.localScale = setSize;
     }
@@ -92,7 +93,7 @@ public class ScytheState : MonoBehaviour
             scytheState = "stuck";
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-
+            rb.isKinematic = false;
             if (other.gameObject.GetComponent<Rigidbody>() != null)
             {
                 other.gameObject.GetComponent<Rigidbody>().AddForce(lockedVelocity * hitImpulse, ForceMode.Impulse);
@@ -108,6 +109,7 @@ public class ScytheState : MonoBehaviour
         }
         if(scytheState == "flying")
         {
+            rb.isKinematic = false;
             rb.velocity = lockedVelocity;
             rb.angularVelocity = Vector3.zero;
             gameObject.transform.rotation = Quaternion.Euler(new Vector3(xAxisChange, yAxisRotateOnRelease, zAxisRotateOnRelease));
@@ -123,9 +125,10 @@ public class ScytheState : MonoBehaviour
         }
         if(scytheState == "stuck")
         {
-            rb.useGravity = false;
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
+        }
+        else
+        {
+            gameObject.transform.localScale = setSize;
         }
     }
 }

@@ -52,11 +52,33 @@ public class ScytheGrab : MonoBehaviour
     float lineUpAdjust;
     #endregion
     #region slash
+    //states include
+    //"uncharged"
+    //"charged"
+    //"slash"
+    [SerializeField]
+    string slashState;
     [SerializeField]
     Material unchargedMat;
-
+    [SerializeField]
+    Material chargedMat;
+    [SerializeField]
+    Material slashMat;
+    //how far scythe is from camera angle until it charges
+    [SerializeField]
+    float xAxisThreshold;
+    //Time it takes for scythe to charge left(don't set this)
+    [SerializeField]
+    float timeChargeLeft;
+    //Time it takes for scythe to charge (set this)
+    [SerializeField]
+    float timeCharge;
+    //Speed attack threshold
+    [SerializeField]
+    float velocitySlashThreshold;
     #endregion
-
+    #region pull
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
@@ -120,7 +142,7 @@ public class ScytheGrab : MonoBehaviour
         }
         if (debugRelease)
         {
-            designatedScythe.transform.parent = null;
+            designatedScythe.transform.parent.parent = null;
             scytheGrabbed = false;
             debugRelease = false;
         }
@@ -204,6 +226,54 @@ public class ScytheGrab : MonoBehaviour
                 hasTapped = false;
             }
             OnUpdatedAnchors();
+            //Slash controls
+            float cameraAngle = PlayerMainScript.solePlayer.GetComponent<PlayerMainScript>().findCamAngle();
+            float angleOfSythe = CalcProgram.getAngle2D(designatedScythe.transform.position.x - camRig.centerEyeAnchor.position.x, designatedScythe.transform.position.z - camRig.centerEyeAnchor.position.z);
+            if(slashState == "uncharged")
+            {
+                if (Mathf.Abs(angleOfSythe - cameraAngle) > xAxisThreshold)
+                {
+                    timeChargeLeft -= Time.deltaTime;
+                    if (timeChargeLeft <= 0)
+                    {
+                        slashState = "charged";
+                        timeChargeLeft = timeCharge;
+                    }
+                }
+                else
+                {
+                    timeChargeLeft = timeCharge;
+                }
+            }
+            if (slashState == "charged")
+            {
+                OVRPose localPose;
+                OVRPose offsetPose;
+                Vector3 linearVelocity;
+                if (rightHand)
+                {
+                    localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch), orientation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch) };
+                    offsetPose = new OVRPose { position = anchorOffsetPosition, orientation = anchorOffsetRotation };
+                    localPose = localPose * offsetPose;
+                    OVRPose trackingSpace = transform.ToOVRPose() * localPose.Inverse();
+                    linearVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);                
+                }
+                else
+                {
+                    localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch), orientation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch) };
+                    offsetPose = new OVRPose { position = anchorOffsetPosition, orientation = anchorOffsetRotation };
+                    localPose = localPose * offsetPose;
+                    OVRPose trackingSpace = transform.ToOVRPose() * localPose.Inverse();
+                    linearVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch);                
+                }
+                if (CalcProgram.getDist3D(linearVelocity) > velocitySlashThreshold)
+                {
+                    slashState = "slash";
+                }
+            }
+            if (slashState == "slash")
+            {
+            }
         }
     }
 }
