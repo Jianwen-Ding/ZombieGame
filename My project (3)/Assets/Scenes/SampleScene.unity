@@ -131,6 +131,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4683381545413935676, guid: 476d5561990440b4d8597ddc19f26772,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3fffe752ee590bf4592af441729876d8, type: 2}
     - target: {fileID: 5478042670708664445, guid: 476d5561990440b4d8597ddc19f26772,
         type: 3}
       propertyPath: m_RootOrder
@@ -812,8 +817,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045848415}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.36144, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.00000008288771, y: 1.36144, z: -0.000000031664968}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2118517496}
@@ -922,6 +927,7 @@ GameObject:
   - component: {fileID: 1159185593}
   - component: {fileID: 1159185592}
   - component: {fileID: 1159185594}
+  - component: {fileID: 1159185595}
   m_Layer: 0
   m_Name: LeftHandAnchor
   m_TagString: Hands
@@ -985,14 +991,20 @@ MonoBehaviour:
   anchorOffsetPosition: {x: 0, y: 0, z: 0}
   anchorOffsetRotation: {x: 0, y: 0, z: 0, w: 0}
   lineUpAdjust: 1.425
-  slashState: 
-  unchargedMat: {fileID: 0}
-  chargedMat: {fileID: 0}
-  slashMat: {fileID: 0}
+  slashCollider: {fileID: 1159185595}
+  slashState: uncharged
+  unchargedMat: {fileID: 2100000, guid: aabf8dea87105824689be431e98da922, type: 2}
+  chargedMat: {fileID: 2100000, guid: 3db2b2bc15646a246a9d200271386dc4, type: 2}
+  slashMat: {fileID: 2100000, guid: 3fffe752ee590bf4592af441729876d8, type: 2}
   xAxisThreshold: 0
   timeChargeLeft: 0
   timeCharge: 0
+  timeSlashLeft: 0
+  timeSlash: 0
   velocitySlashThreshold: 0
+  velocitySlashMinimum: 0
+  damageSlashDeal: 0
+  slashPushBack: 5
 --- !u!54 &1159185593
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1107,6 +1119,19 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!65 &1159185595
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159185589}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 0.4, z: 2.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1338409063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,6 +1280,7 @@ GameObject:
   - component: {fileID: 1630445040}
   - component: {fileID: 1630445039}
   - component: {fileID: 1630445042}
+  - component: {fileID: 1630445043}
   m_Layer: 0
   m_Name: RightHandAnchor
   m_TagString: Hands
@@ -1305,14 +1331,20 @@ MonoBehaviour:
   anchorOffsetPosition: {x: 0, y: 0, z: 0}
   anchorOffsetRotation: {x: 0, y: 0, z: 0, w: 0}
   lineUpAdjust: 1.425
-  slashState: 
-  unchargedMat: {fileID: 0}
-  chargedMat: {fileID: 0}
-  slashMat: {fileID: 0}
-  xAxisThreshold: 0
+  slashCollider: {fileID: 1630445043}
+  slashState: uncharged
+  unchargedMat: {fileID: 2100000, guid: aabf8dea87105824689be431e98da922, type: 2}
+  chargedMat: {fileID: 2100000, guid: 3db2b2bc15646a246a9d200271386dc4, type: 2}
+  slashMat: {fileID: 2100000, guid: 3fffe752ee590bf4592af441729876d8, type: 2}
+  xAxisThreshold: 50
   timeChargeLeft: 0
-  timeCharge: 0
-  velocitySlashThreshold: 0
+  timeCharge: 4
+  timeSlashLeft: 0
+  timeSlash: 1.5
+  velocitySlashThreshold: 2
+  velocitySlashMinimum: 1
+  damageSlashDeal: 0
+  slashPushBack: 5
 --- !u!54 &1630445040
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1440,6 +1472,19 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!65 &1630445043
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630445037}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 0.4, z: 2.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1725982592
 GameObject:
   m_ObjectHideFlags: 0
@@ -1625,7 +1670,7 @@ MonoBehaviour:
   leftScytheState: 
   speed: 1
   jumpForce: 5
-  camMoveSpeed: 0
+  camMoveSpeed: 80
 --- !u!54 &1798253781
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2057,7 +2102,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aabf8dea87105824689be431e98da922, type: 2}
+  - {fileID: 2100000, guid: bc0300e976173994a92b5e91881aeaad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

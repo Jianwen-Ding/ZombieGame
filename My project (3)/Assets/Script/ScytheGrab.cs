@@ -57,6 +57,8 @@ public class ScytheGrab : MonoBehaviour
     //"charged"
     //"slash"
     [SerializeField]
+    BoxCollider slashCollider;
+    [SerializeField]
     string slashState;
     [SerializeField]
     Material unchargedMat;
@@ -73,9 +75,23 @@ public class ScytheGrab : MonoBehaviour
     //Time it takes for scythe to charge (set this)
     [SerializeField]
     float timeCharge;
+    //Slash timers
+    [SerializeField]
+    float timeSlashLeft;
+    [SerializeField]
+    float timeSlash;
     //Speed attack threshold
     [SerializeField]
     float velocitySlashThreshold;
+    //Speed attack threshold
+    [SerializeField]
+    float velocitySlashMinimum;
+    //Damage it deals
+    [SerializeField]
+    int damageSlashDeal;
+    //Amount slashed rigidbodies get slashed back
+    [SerializeField]
+    int slashPushBack;
     #endregion
     #region pull
     #endregion
@@ -123,6 +139,14 @@ public class ScytheGrab : MonoBehaviour
         {
             scytheCurrentlyInRange = true;
         }
+        if(slashState == "slash")
+        {
+            if(otherCollider.gameObject.GetComponent<Rigidbody>() != null)
+            {
+                Vector2 angle = CalcProgram.getAngleBetweenPoints3D(otherCollider.gameObject.transform.position, camRig.centerEyeAnchor.position);
+                otherCollider.gameObject.GetComponent<Rigidbody>().AddForce(CalcProgram.getVectorFromAngle3D(angle.x, angle.y, slashPushBack));
+            }
+        }
         
     }
     void OnTriggerExit(Collider otherCollider)
@@ -135,7 +159,11 @@ public class ScytheGrab : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (debugBool)
+        if (slashState != "slash")
+        {
+            slashCollider.enabled = false;
+        }
+            if (debugBool)
         {
             scytheGrabbed = true;
             debugBool = false;
@@ -231,6 +259,7 @@ public class ScytheGrab : MonoBehaviour
             float angleOfSythe = CalcProgram.getAngle2D(designatedScythe.transform.position.x - camRig.centerEyeAnchor.position.x, designatedScythe.transform.position.z - camRig.centerEyeAnchor.position.z);
             if(slashState == "uncharged")
             {
+                designatedScythe.GetComponent<MeshRenderer>().material = unchargedMat;
                 if (Mathf.Abs(angleOfSythe - cameraAngle) > xAxisThreshold)
                 {
                     timeChargeLeft -= Time.deltaTime;
@@ -247,6 +276,7 @@ public class ScytheGrab : MonoBehaviour
             }
             if (slashState == "charged")
             {
+                designatedScythe.GetComponent<MeshRenderer>().material = slashMat;
                 OVRPose localPose;
                 OVRPose offsetPose;
                 Vector3 linearVelocity;
@@ -269,10 +299,41 @@ public class ScytheGrab : MonoBehaviour
                 if (CalcProgram.getDist3D(linearVelocity) > velocitySlashThreshold)
                 {
                     slashState = "slash";
+                    timeSlashLeft = timeSlash;
                 }
             }
             if (slashState == "slash")
             {
+                designatedScythe.GetComponent<MeshRenderer>().material = chargedMat;
+                slashCollider.enabled = true;
+                timeSlashLeft -= Time.deltaTime;
+                if(timeSlashLeft <= 0)
+                {
+                    slashState = "uncharged";
+                }
+                OVRPose localPose;
+                OVRPose offsetPose;
+                Vector3 linearVelocity;
+                if (rightHand)
+                {
+                    localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch), orientation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch) };
+                    offsetPose = new OVRPose { position = anchorOffsetPosition, orientation = anchorOffsetRotation };
+                    localPose = localPose * offsetPose;
+                    OVRPose trackingSpace = transform.ToOVRPose() * localPose.Inverse();
+                    linearVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);
+                }
+                else
+                {
+                    localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch), orientation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch) };
+                    offsetPose = new OVRPose { position = anchorOffsetPosition, orientation = anchorOffsetRotation };
+                    localPose = localPose * offsetPose;
+                    OVRPose trackingSpace = transform.ToOVRPose() * localPose.Inverse();
+                    linearVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch);
+                }
+                if (CalcProgram.getDist3D(linearVelocity) < velocitySlashMinimum)
+                {
+                    slashState = "uncharged";
+                }
             }
         }
     }

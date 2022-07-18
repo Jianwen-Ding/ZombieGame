@@ -110,7 +110,7 @@ public class PlayerMainScript : MonoBehaviour
         }
         if (OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick) != Vector2.zero)
         {
-            cam.gameObject.transform.Rotate(OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x * camMoveSpeed, OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).y * camMoveSpeed, 0);
+            gameObject.transform.Rotate(0, OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x * camMoveSpeed * Time.deltaTime, 0);
 
         }
         if (colCheck.getIsGrounded() && (OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) != 0 || OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) != 0))

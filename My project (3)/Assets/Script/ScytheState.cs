@@ -39,6 +39,8 @@ public class ScytheState : MonoBehaviour
     float speedToSpinRatio;
     [SerializeField]
     float rotationDebug;
+    [SerializeField]
+    float damageThrowDeal;
     //stuck scytheState
     GameObject stabbedObject;
     [SerializeField]

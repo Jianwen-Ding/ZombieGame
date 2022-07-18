@@ -53,11 +53,32 @@ public class CalcProgram : MonoBehaviour
     }
     //angleX
     //angleY
-    static public Vector2 getAngleDiffrence3D(float x, float y, float z, float x2, float y2, float z2)
+    static public Vector2 getAngle3D(float x, float y, float z)
     {
         Vector2 ret;
         ret.x = Mathf.Rad2Deg * Mathf.Atan2(z, x);
         ret.y = Mathf.Rad2Deg * Mathf.Atan2(y, z);
+        return ret;
+    }
+    static public Vector2 getAngle3D(Vector3 vector)
+    {
+        Vector2 ret;
+        ret.x = Mathf.Rad2Deg * Mathf.Atan2(vector.z, vector.x);
+        ret.y = Mathf.Rad2Deg * Mathf.Atan2(vector.y, vector.z);
+        return ret;
+    }
+    static public Vector2 getAngleBetweenPoints3D(float x, float y, float z, float x1, float y1, float z1)
+    {
+        Vector2 ret;
+        ret.x = Mathf.Rad2Deg * Mathf.Atan2(z - z1, x - x1);
+        ret.y = Mathf.Rad2Deg * Mathf.Atan2(y - y1, z - z1);
+        return ret;
+    }
+    static public Vector2 getAngleBetweenPoints3D(Vector3 vector, Vector3 origin)
+    {
+        Vector2 ret;
+        ret.x = Mathf.Rad2Deg * Mathf.Atan2(vector.z - origin.z, vector.x - origin.x);
+        ret.y = Mathf.Rad2Deg * Mathf.Atan2(vector.y - origin.y, vector.z - origin.z);
         return ret;
     }
 }
