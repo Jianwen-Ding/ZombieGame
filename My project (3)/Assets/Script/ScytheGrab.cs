@@ -207,18 +207,15 @@ public class ScytheGrab : MonoBehaviour
                     hasTapped = false;
                 }
             }
-            distFromAnch = CalcProgram.getDistBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
-            anglesScytheCurrent = CalcProgram.getAngleBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
-            targetAngle = new Vector2(camRig.rightControllerAnchor.rotation.x, contTransform.rotation.y);
             //if(angleDiffrenceChange > Mathf.Abs(targetAngle.x - anglesScytheCurrent.x) && angleDiffrenceChange > Mathf.Abs(targetAngle.y - anglesScytheCurrent.y))
             //{
-            Vector2 angleChange = CalcProgram.getVectorFromAngle2D(CalcProgram.getAngleBetweenPoints2D(targetAngle, anglesScytheCurrent), angleSpeedChange * Time.deltaTime);
+            /*Vector2 angleChange = CalcProgram.getVectorFromAngle2D(CalcProgram.getAngleBetweenPoints2D(targetAngle, anglesScytheCurrent), angleSpeedChange * Time.deltaTime);
             anglesScytheCurrent = new Vector2(anglesScytheCurrent.x + angleChange.x, anglesScytheCurrent.y + angleChange.y);
-            designatedScythe.transform.position = CalcProgram.getVectorFromAngleBetweenTwoPoints3D(anglesScytheCurrent.x, anglesScytheCurrent.y, contTransform.position, distFromAnch);
+            designatedScythe.transform.position = CalcProgram.getVectorFromAngleBetweenTwoPoints3D(anglesScytheCurrent.x, anglesScytheCurrent.y, contTransform.position, distFromAnch);*/
             if (rightHand && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0 || rightHand == false && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0)
             {
-                
-                distFromAnch = CalcProgram.getDistBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
+                Debug.DrawRay(contTransform.position, contTransform.position + CalcProgram.getVectorFromAngle3D(camRig.rightControllerAnchor.rotation.x, camRig.rightControllerAnchor.rotation.y, 5), Color.red, 0.5f);
+                /*distFromAnch = CalcProgram.getDistBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
                 anglesScytheCurrent = CalcProgram.getAngleBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
                 targetAngle = new Vector2(camRig.rightControllerAnchor.rotation.x, contTransform.rotation.y);
                 //if(angleDiffrenceChange > Mathf.Abs(targetAngle.x - anglesScytheCurrent.x) && angleDiffrenceChange > Mathf.Abs(targetAngle.y - anglesScytheCurrent.y))
@@ -229,7 +226,7 @@ public class ScytheGrab : MonoBehaviour
                 //Vector3 lockedVel = designatedState.getLockedVel();
                 //float velSpeed = CalcProgram.getDist3D(lockedVel);
                 //designatedState.setLockedVel(CalcProgram.getVectorFromAngle3D(angleChange.x, angleChange.y, velSpeed));
-                //}
+                //}*/
                 
             }
         }
