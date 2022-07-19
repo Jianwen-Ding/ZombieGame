@@ -42,9 +42,9 @@ public class ScytheState : MonoBehaviour
     [SerializeField]
     float damageThrowDeal;
     [SerializeField]
-    float minimumThrowSpeed;
+    float minimumThrowSpeed = 3f;
     [SerializeField]
-    float throwSpeedMultiplier;
+    float throwSpeedMultiplier = 2f;
     //stuck scytheState
     GameObject stabbedObject;
     [SerializeField]
