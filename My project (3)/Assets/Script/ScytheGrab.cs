@@ -214,7 +214,7 @@ public class ScytheGrab : MonoBehaviour
             designatedScythe.transform.position = CalcProgram.getVectorFromAngleBetweenTwoPoints3D(anglesScytheCurrent.x, anglesScytheCurrent.y, contTransform.position, distFromAnch);*/
             if (rightHand && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0 || rightHand == false && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0)
             {
-                Debug.DrawRay(contTransform.position, contTransform.position + CalcProgram.getVectorFromAngle3D(camRig.rightControllerAnchor.rotation.x, camRig.rightControllerAnchor.rotation.y, 5), Color.red, 0.5f);
+                Debug.DrawRay(contTransform.position, contTransform.position + contTransform.forward * 5, Color.red, 0.5f);
                 /*distFromAnch = CalcProgram.getDistBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
                 anglesScytheCurrent = CalcProgram.getAngleBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
                 targetAngle = new Vector2(camRig.rightControllerAnchor.rotation.x, contTransform.rotation.y);
