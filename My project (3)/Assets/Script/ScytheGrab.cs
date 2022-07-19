@@ -204,7 +204,7 @@ public class ScytheGrab : MonoBehaviour
                 }
             }
             //add in later || rightHand == false && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0
-            if (rightHand && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0)
+            if (rightHand && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0 || rightHand == false && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0)
             {
                 Vector2 targetAngle;
                 float distFromAnch;
