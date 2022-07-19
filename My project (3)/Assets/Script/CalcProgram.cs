@@ -98,7 +98,7 @@ public class CalcProgram : MonoBehaviour
     {
         Vector2 ret;
         ret.x = Mathf.Rad2Deg * Mathf.Atan2(z, x);
-        ret.y = Mathf.Rad2Deg * Mathf.Atan2(z, y);
+        ret.y = Mathf.Rad2Deg * Mathf.Atan2(y, z);
         return ret;
     }
     static public Vector2 getAngle3D(Vector3 vector)
@@ -112,14 +112,14 @@ public class CalcProgram : MonoBehaviour
     {
         Vector2 ret;
         ret.x = Mathf.Rad2Deg * Mathf.Atan2(z - z1, x - x1);
-        ret.y = Mathf.Rad2Deg * Mathf.Atan2(z - z1, y - y1);
+        ret.y = Mathf.Rad2Deg * Mathf.Atan2(y - y1, z - z1);
         return ret;
     }
     static public Vector2 getAngleBetweenPoints3D(Vector3 vector, Vector3 origin)
     {
         Vector2 ret;
         ret.x = Mathf.Rad2Deg * Mathf.Atan2(vector.z - origin.z, vector.x - origin.x);
-        ret.y = Mathf.Rad2Deg * Mathf.Atan2(vector.z - origin.z, vector.y - origin.y);
+        ret.y = Mathf.Rad2Deg * Mathf.Atan2(vector.y - origin.y, vector.z - origin.z);
         return ret;
     }
 }

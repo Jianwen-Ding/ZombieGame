@@ -218,6 +218,11 @@ PrefabInstance:
       objectReference: {fileID: 1045848417}
     - target: {fileID: 8390934719223031445, guid: 476d5561990440b4d8597ddc19f26772,
         type: 3}
+      propertyPath: scytheState
+      value: flying
+      objectReference: {fileID: 0}
+    - target: {fileID: 8390934719223031445, guid: 476d5561990440b4d8597ddc19f26772,
+        type: 3}
       propertyPath: knockBackSlash
       value: 5
       objectReference: {fileID: 0}
@@ -2294,6 +2299,11 @@ PrefabInstance:
       propertyPath: camRig
       value: 
       objectReference: {fileID: 1045848417}
+    - target: {fileID: 8390934719223031445, guid: 476d5561990440b4d8597ddc19f26772,
+        type: 3}
+      propertyPath: scytheState
+      value: flying
+      objectReference: {fileID: 0}
     - target: {fileID: 8390934719223031445, guid: 476d5561990440b4d8597ddc19f26772,
         type: 3}
       propertyPath: knockBackSlash
