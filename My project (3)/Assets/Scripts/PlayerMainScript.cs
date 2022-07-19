@@ -101,7 +101,8 @@ public class PlayerMainScript : MonoBehaviour
         cameraAngle = sideWaysAngle;
         if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
         {
-            SceneManager.LoadScene("Starting Corridor");
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
         }
         if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) != Vector2.zero)
         {
