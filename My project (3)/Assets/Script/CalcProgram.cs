@@ -62,6 +62,23 @@ public class CalcProgram : MonoBehaviour
         ret.z = getVectorFromAngle2D(angleX, distance).y;
         return ret;
     }
+    static public Vector2 getVectorFromAngleBetweenTwoPoints2D(float angle, Vector2 origin, float distance)
+    {
+        Vector2 ret;
+        ret.x = Mathf.Cos(angle * Mathf.Deg2Rad) * distance;
+        ret.y = Mathf.Sin(angle * Mathf.Deg2Rad) * distance;
+        ret = new Vector2(ret.x + origin.x , ret.y + origin.y);
+        return ret;
+    }
+    static public Vector3 getVectorFromAngleBetweenTwoPoints3D(float angleX, float angleY, Vector3 origin, float distance)
+    {
+        Vector3 ret;
+        ret.x = getVectorFromAngle2D(angleX, distance).x;
+        ret.y = Mathf.Sin(angleY * Mathf.Deg2Rad) * distance;
+        ret.z = getVectorFromAngle2D(angleX, distance).y;
+        ret = new Vector3(ret.x + origin.x, ret.y + origin.y, ret.z + origin.z);
+        return ret;
+    }
     static public Vector2 DegreesFromVector(Vector3 angle)
     {
         Vector2 ret;
