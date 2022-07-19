@@ -41,10 +41,42 @@ public class ScytheState : MonoBehaviour
     float rotationDebug;
     [SerializeField]
     float damageThrowDeal;
+    [SerializeField]
+    float minimumThrowSpeed;
+    [SerializeField]
+    float throwSpeedMultiplier;
     //stuck scytheState
     GameObject stabbedObject;
     [SerializeField]
     float hitImpulse;
+    //slash
+    [SerializeField]
+    bool isSlashing;
+    [SerializeField]
+    float knockBackSlash;
+    [SerializeField]
+    int damageOnSlash;
+    //Size of hitbox
+    [SerializeField]
+    Vector3 slashSizeIncrease;
+    [SerializeField]
+    Vector3 slashOriginalSize;
+    public void setLockedVel(Vector3 lockSet)
+    {
+        lockedVelocity = lockSet;
+    }
+    public Vector3 getLockedVel()
+    {
+        return lockedVelocity;
+    } 
+    public void setSlash(bool set)
+    {
+        isSlashing = set;
+    }
+    public bool getSlash()
+    {
+        return isSlashing;
+    }
     public void establishGrabbedBy(GameObject establish)
     {
         grabbedBy = establish;
@@ -58,9 +90,18 @@ public class ScytheState : MonoBehaviour
     public void endGrab(Vector3 linearVelocity, Vector3 angularVelocity)
     {
         scytheState = "flying";
-        rb.velocity = linearVelocity;
-        lockedVelocity = linearVelocity;
-        rb.angularVelocity = Vector3.zero;
+        float speed = CalcProgram.getDist3D(linearVelocity);
+        Vector2 angles = CalcProgram.getAngle3D(linearVelocity);
+        speed *= throwSpeedMultiplier;
+        if(speed < minimumThrowSpeed)
+        {
+            lockedVelocity = CalcProgram.getVectorFromAngle3D(angles.x , angles.y, minimumThrowSpeed);
+        }
+        else
+        {
+            lockedVelocity = CalcProgram.getVectorFromAngle3D(angles.x, angles.y, speed);
+        }
+        rb.velocity = lockedVelocity;
         if(angularVelocity.x > 0)
         {
             xChangePositive = true;
@@ -69,13 +110,16 @@ public class ScytheState : MonoBehaviour
         {
             xChangePositive = false;
         }
+        rb.angularVelocity = Vector3.zero;
         zAxisRotateOnRelease = gameObject.transform.rotation.z;
         xAxisChange = gameObject.transform.rotation.x;
-        yAxisRotateOnRelease = CalcProgram.getAngle2D(lockedVelocity.x, lockedVelocity.z) - 90;
+        yAxisRotateOnRelease = gameObject.transform.rotation.y;
     }
     // Start is called before the first frame update
     void Start()
     {
+        collide = gameObject.GetComponent<BoxCollider>();
+        slashOriginalSize = collide.size;
         setSize = gameObject.transform.localScale;
         OVRCameraRig[] CameraRigs = GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<OVRCameraRig>();
 
@@ -89,7 +133,7 @@ public class ScytheState : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag != "Hands" && scytheState == "flying"&&  other.gameObject.layer != 6)
+        if (other.gameObject.tag != "Hands" && scytheState == "flying" &&  other.gameObject.layer != 6)
         {
             stabbedObject = other.gameObject;
             scytheState = "stuck";
@@ -100,6 +144,15 @@ public class ScytheState : MonoBehaviour
             {
                 other.gameObject.GetComponent<Rigidbody>().AddForce(lockedVelocity * hitImpulse, ForceMode.Impulse);
             }
+        }
+        if(other.gameObject.tag != "Hands" && isSlashing && other.gameObject.layer != 6)
+        {
+            if(other.gameObject.GetComponent<Rigidbody>() != null)
+            {
+                Vector2 angles = CalcProgram.getAngleBetweenPoints3D(transform.position, camRig.centerEyeAnchor.position);
+                other.gameObject.GetComponent<Rigidbody>().AddForce(CalcProgram.getVectorFromAngle3D(angles.x, angles.y, knockBackSlash), ForceMode.Impulse);
+            }
+           
         }
     }
     // Update is called once per frame
@@ -131,6 +184,14 @@ public class ScytheState : MonoBehaviour
         else
         {
             gameObject.transform.localScale = setSize;
+        }
+        if (isSlashing)
+        {
+            collide.size = slashSizeIncrease;
+        }
+        else
+        {
+            collide.size = slashOriginalSize;
         }
     }
 }

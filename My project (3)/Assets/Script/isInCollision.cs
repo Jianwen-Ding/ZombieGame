@@ -22,10 +22,6 @@ public class isInCollision : MonoBehaviour
     {
         isColliding = true;
     }
-    private void OnTriggerStay(Collider other)
-    {
-        isColliding = true;
-    }
     private void OnTriggerExit(Collider other)
     {
         isColliding = false;
@@ -33,15 +29,15 @@ public class isInCollision : MonoBehaviour
     private void Update()
     {
         int layerMask = ~LayerMask.GetMask("Player");
-        isGrounded = (isColliding && Physics.Raycast(gameObject.transform.position, new Vector3(0, -1, 0), 2, layerMask) 
-            && Physics.Raycast(new Vector3(transform.position.x + rectExpand, transform.position.y, transform.position.z+ rectExpand), new Vector3(0, -1, 0), 0.85f, layerMask) 
-            && Physics.Raycast(new Vector3(transform.position.x - rectExpand, transform.position.y, transform.position.z + rectExpand), new Vector3(0, -1, 0), 0.85f, layerMask) 
-            && Physics.Raycast(new Vector3(transform.position.x + rectExpand, transform.position.y, transform.position.z - rectExpand), new Vector3(0, -1, 0), 0.85f, layerMask) 
-            && Physics.Raycast(new Vector3(transform.position.x - rectExpand, transform.position.y, transform.position.z - rectExpand), new Vector3(0, -1, 0), 0.85f, layerMask));
-        Debug.DrawRay(gameObject.transform.position, new Vector3(0, -0.85f, 0), Color.red, 0.5f);
+        isGrounded = (isColliding && (Physics.Raycast(gameObject.transform.position, new Vector3(0, -1, 0), 2, layerMask)
+            || Physics.Raycast(new Vector3(transform.position.x + rectExpand, transform.position.y, transform.position.z+ rectExpand), new Vector3(0, -1, 0), 0.85f, layerMask) 
+            || Physics.Raycast(new Vector3(transform.position.x - rectExpand, transform.position.y, transform.position.z + rectExpand), new Vector3(0, -1, 0), 0.85f, layerMask) 
+            || Physics.Raycast(new Vector3(transform.position.x + rectExpand, transform.position.y, transform.position.z - rectExpand), new Vector3(0, -1, 0), 0.85f, layerMask) 
+            || Physics.Raycast(new Vector3(transform.position.x - rectExpand, transform.position.y, transform.position.z - rectExpand), new Vector3(0, -1, 0), 0.85f, layerMask)));
+        /*Debug.DrawRay(gameObject.transform.position, new Vector3(0, -0.85f, 0), Color.red, 0.5f);
         Debug.DrawRay(new Vector3(transform.position.x - rectExpand, transform.position.y, transform.position.z + rectExpand), new Vector3(0, -0.85f, 0), Color.red, 0.5f);
         Debug.DrawRay(new Vector3(transform.position.x + rectExpand, transform.position.y, transform.position.z + rectExpand), new Vector3(0, -0.85f, 0), Color.red, 0.5f);
         Debug.DrawRay(new Vector3(transform.position.x - rectExpand, transform.position.y, transform.position.z - rectExpand), new Vector3(0, -0.85f, 0), Color.red, 0.5f);
-        Debug.DrawRay(new Vector3(transform.position.x + rectExpand, transform.position.y, transform.position.z - rectExpand), new Vector3(0, -0.85f, 0), Color.red, 0.5f);
+        Debug.DrawRay(new Vector3(transform.position.x + rectExpand, transform.position.y, transform.position.z - rectExpand), new Vector3(0, -0.85f, 0), Color.red, 0.5f);*/
     }
 }

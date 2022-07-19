@@ -57,8 +57,6 @@ public class ScytheGrab : MonoBehaviour
     //"charged"
     //"slash"
     [SerializeField]
-    BoxCollider slashCollider;
-    [SerializeField]
     string slashState;
     [SerializeField]
     Material unchargedMat;
@@ -86,14 +84,16 @@ public class ScytheGrab : MonoBehaviour
     //Speed attack threshold
     [SerializeField]
     float velocitySlashMinimum;
-    //Damage it deals
-    [SerializeField]
-    int damageSlashDeal;
-    //Amount slashed rigidbodies get slashed back
-    [SerializeField]
-    int slashPushBack;
     #endregion
     #region pull
+    [SerializeField]
+    Vector2 anglesScytheCurrent;
+    [SerializeField]
+    float angleSpeedChange;
+    [SerializeField]
+    Vector2 angleOffSetFromController;
+    [SerializeField]
+    float angleDiffrenceChange;
     #endregion
     // Start is called before the first frame update
     void Start()
@@ -139,14 +139,6 @@ public class ScytheGrab : MonoBehaviour
         {
             scytheCurrentlyInRange = true;
         }
-        if(slashState == "slash")
-        {
-            if(otherCollider.gameObject.GetComponent<Rigidbody>() != null)
-            {
-                Vector2 angle = CalcProgram.getAngleBetweenPoints3D(otherCollider.gameObject.transform.position, camRig.centerEyeAnchor.position);
-                otherCollider.gameObject.GetComponent<Rigidbody>().AddForce(CalcProgram.getVectorFromAngle3D(angle.x, angle.y, slashPushBack));
-            }
-        }
         
     }
     void OnTriggerExit(Collider otherCollider)
@@ -159,11 +151,8 @@ public class ScytheGrab : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (slashState != "slash")
-        {
-            slashCollider.enabled = false;
-        }
-            if (debugBool)
+        designatedState.setSlash(slashState == "slash");
+        if (debugBool)
         {
             scytheGrabbed = true;
             debugBool = false;
@@ -178,8 +167,13 @@ public class ScytheGrab : MonoBehaviour
         {
             /*line.SetPosition(0, new Vector3(contTransform.position.x, contTransform.position.y + lineUpAdjust, contTransform.position.z));
             line.SetPosition(1, designatedScythe.transform.position);*/
-
-            if ((rightHand && OVRInput.Get(OVRInput.Button.SecondaryThumbstick) || rightHand == false && OVRInput.Get(OVRInput.Button.PrimaryThumbstick)))
+            if(slashState != "uncharged")
+            {
+                slashState = "uncharged";
+                designatedScythe.GetComponent<MeshRenderer>().material = unchargedMat;
+            }
+           
+            if (rightHand && OVRInput.Get(OVRInput.Button.SecondaryThumbstick) || rightHand == false && OVRInput.Get(OVRInput.Button.PrimaryThumbstick))
             {
                 designatedScythe.transform.parent = null;
                 mainController.transform.position = designatedScythe.transform.position;
@@ -208,6 +202,30 @@ public class ScytheGrab : MonoBehaviour
                 {
                     hasTapped = false;
                 }
+            }
+            if (rightHand && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0|| rightHand == false && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0)
+            {
+                Vector2 targetAngle;
+                float distFromAnch;
+                if (rightHand)
+                {
+                    distFromAnch = CalcProgram.getDistBetweenPoints3D(designatedScythe.transform.position, camRig.rightControllerAnchor.position);
+                    anglesScytheCurrent = CalcProgram.getAngleBetweenPoints3D(designatedScythe.transform.position, camRig.rightControllerAnchor.position);
+                    targetAngle = new Vector2(camRig.rightControllerAnchor.rotation.x, camRig.rightControllerAnchor.rotation.y);
+                    
+                }
+                else
+                {
+                    distFromAnch = CalcProgram.getDistBetweenPoints3D(designatedScythe.transform.position, camRig.leftControllerAnchor.position);
+                    anglesScytheCurrent = CalcProgram.getAngleBetweenPoints3D(designatedScythe.transform.position, camRig.leftControllerAnchor.position);
+                    targetAngle = new Vector2(camRig.leftControllerAnchor.rotation.x, camRig.leftControllerAnchor.rotation.y);
+                }
+                Vector2 angleChange = CalcProgram.getVectorFromAngle2D(CalcProgram.getAngleBetweenPoints2D(targetAngle, anglesScytheCurrent), angleSpeedChange * Time.deltaTime);
+                anglesScytheCurrent = new Vector2(anglesScytheCurrent.x + angleChange.x, anglesScytheCurrent.y + angleChange.y);
+                designatedScythe.transform.position = CalcProgram.getVectorFromAngle3D(anglesScytheCurrent.x, anglesScytheCurrent.y, distFromAnch);
+                Vector3 lockedVel = designatedState.getLockedVel();
+                float velSpeed = CalcProgram.getDist3D(lockedVel);
+                designatedState.setLockedVel(CalcProgram.getVectorFromAngle3D(angleChange.x, angleChange.y, velSpeed));
             }
         }
         else
@@ -265,6 +283,7 @@ public class ScytheGrab : MonoBehaviour
                     timeChargeLeft -= Time.deltaTime;
                     if (timeChargeLeft <= 0)
                     {
+                        designatedScythe.GetComponent<MeshRenderer>().material = chargedMat;
                         slashState = "charged";
                         timeChargeLeft = timeCharge;
                     }
@@ -276,7 +295,7 @@ public class ScytheGrab : MonoBehaviour
             }
             if (slashState == "charged")
             {
-                designatedScythe.GetComponent<MeshRenderer>().material = slashMat;
+                designatedScythe.GetComponent<MeshRenderer>().material = chargedMat;
                 OVRPose localPose;
                 OVRPose offsetPose;
                 Vector3 linearVelocity;
@@ -299,17 +318,18 @@ public class ScytheGrab : MonoBehaviour
                 if (CalcProgram.getDist3D(linearVelocity) > velocitySlashThreshold)
                 {
                     slashState = "slash";
+                    designatedScythe.GetComponent<MeshRenderer>().material = slashMat;
                     timeSlashLeft = timeSlash;
                 }
             }
             if (slashState == "slash")
             {
-                designatedScythe.GetComponent<MeshRenderer>().material = chargedMat;
-                slashCollider.enabled = true;
+                designatedScythe.GetComponent<MeshRenderer>().material = slashMat;
                 timeSlashLeft -= Time.deltaTime;
                 if(timeSlashLeft <= 0)
                 {
                     slashState = "uncharged";
+                    designatedScythe.GetComponent<MeshRenderer>().material = unchargedMat;
                 }
                 OVRPose localPose;
                 OVRPose offsetPose;
@@ -333,6 +353,7 @@ public class ScytheGrab : MonoBehaviour
                 if (CalcProgram.getDist3D(linearVelocity) < velocitySlashMinimum)
                 {
                     slashState = "uncharged";
+                    designatedScythe.GetComponent<MeshRenderer>().material = unchargedMat;
                 }
             }
         }
