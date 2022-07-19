@@ -32,6 +32,8 @@ public class PlayerMainScript : MonoBehaviour
     [SerializeField]
     private float jumpForce;
     [SerializeField]
+    private bool hasJumped;
+    [SerializeField]
     private float camMoveSpeed;
     public float findCamAngle()
     {
@@ -113,9 +115,14 @@ public class PlayerMainScript : MonoBehaviour
             gameObject.transform.Rotate(0, OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x * camMoveSpeed * Time.deltaTime, 0);
 
         }
-        if (colCheck.getIsGrounded() && (OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) != 0 || OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) != 0))
+        if (colCheck.getIsGrounded() && hasJumped == false && (OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) != 0 || OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) != 0))
         {
             rb.AddForce(new Vector3(0,jumpForce,0), ForceMode.Impulse);
+            hasJumped = true;
+        }
+        if(colCheck.getIsGrounded() == false)
+        {
+            hasJumped = false;
         }
     }
 }

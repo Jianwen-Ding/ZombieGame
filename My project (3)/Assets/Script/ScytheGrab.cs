@@ -203,7 +203,8 @@ public class ScytheGrab : MonoBehaviour
                     hasTapped = false;
                 }
             }
-            if (rightHand && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0|| rightHand == false && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0)
+            //add in later || rightHand == false && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0
+            if (rightHand && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0)
             {
                 Vector2 targetAngle;
                 float distFromAnch;
@@ -220,12 +221,15 @@ public class ScytheGrab : MonoBehaviour
                     anglesScytheCurrent = CalcProgram.getAngleBetweenPoints3D(designatedScythe.transform.position, camRig.leftControllerAnchor.position);
                     targetAngle = new Vector2(camRig.leftControllerAnchor.rotation.x, camRig.leftControllerAnchor.rotation.y);
                 }
-                Vector2 angleChange = CalcProgram.getVectorFromAngle2D(CalcProgram.getAngleBetweenPoints2D(targetAngle, anglesScytheCurrent), angleSpeedChange * Time.deltaTime);
-                anglesScytheCurrent = new Vector2(anglesScytheCurrent.x + angleChange.x, anglesScytheCurrent.y + angleChange.y);
-                designatedScythe.transform.position = CalcProgram.getVectorFromAngle3D(anglesScytheCurrent.x, anglesScytheCurrent.y, distFromAnch);
-                Vector3 lockedVel = designatedState.getLockedVel();
-                float velSpeed = CalcProgram.getDist3D(lockedVel);
-                designatedState.setLockedVel(CalcProgram.getVectorFromAngle3D(angleChange.x, angleChange.y, velSpeed));
+                if(angleDiffrenceChange > Mathf.Abs(targetAngle.x - anglesScytheCurrent.x) && angleDiffrenceChange > Mathf.Abs(targetAngle.y - anglesScytheCurrent.y))
+                {
+                    Vector2 angleChange = CalcProgram.getVectorFromAngle2D(CalcProgram.getAngleBetweenPoints2D(targetAngle, anglesScytheCurrent), angleSpeedChange * Time.deltaTime);
+                    anglesScytheCurrent = new Vector2(anglesScytheCurrent.x + angleChange.x, anglesScytheCurrent.y + angleChange.y);
+                    designatedScythe.transform.position = CalcProgram.getVectorFromAngle3D(anglesScytheCurrent.x, anglesScytheCurrent.y, distFromAnch);
+                    Vector3 lockedVel = designatedState.getLockedVel();
+                    float velSpeed = CalcProgram.getDist3D(lockedVel);
+                    designatedState.setLockedVel(CalcProgram.getVectorFromAngle3D(angleChange.x, angleChange.y, velSpeed));
+                }
             }
         }
         else

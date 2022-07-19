@@ -1693,7 +1693,8 @@ MonoBehaviour:
   leftScythe: {fileID: 0}
   leftScytheState: 
   speed: 1
-  jumpForce: 5
+  jumpForce: 20
+  hasJumped: 0
   camMoveSpeed: 80
 --- !u!54 &1798253781
 Rigidbody:
