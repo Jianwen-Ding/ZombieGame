@@ -30,6 +30,8 @@ public class ScytheState : MonoBehaviour
     [SerializeField]
     Vector3 lockedVelocity;
     [SerializeField]
+    Vector3 addVelocity;
+    [SerializeField]
     float zAxisRotateOnRelease;
     [SerializeField]
     float yAxisRotateOnRelease;
@@ -61,6 +63,14 @@ public class ScytheState : MonoBehaviour
     Vector3 slashSizeIncrease;
     [SerializeField]
     Vector3 slashOriginalSize;
+    public string getState()
+    {
+        return scytheState;
+    }
+    public void setAddVel(Vector3 add)
+    {
+        addVelocity = add;
+    }
     public void setLockedVel(Vector3 lockSet)
     {
         lockedVelocity = lockSet;
@@ -118,6 +128,7 @@ public class ScytheState : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        addVelocity = Vector2.zero;
         collide = gameObject.GetComponent<BoxCollider>();
         slashOriginalSize = collide.size;
         setSize = gameObject.transform.localScale;
@@ -165,7 +176,16 @@ public class ScytheState : MonoBehaviour
         if(scytheState == "flying")
         {
             rb.isKinematic = false;
-            rb.velocity = lockedVelocity;
+            if(addVelocity == Vector3.zero)
+            {
+                rb.velocity = lockedVelocity;
+            }
+            else
+            {
+                rb.velocity = lockedVelocity + addVelocity;
+                addVelocity = Vector3.zero;
+            }
+           
             rb.angularVelocity = Vector3.zero;
             gameObject.transform.rotation = Quaternion.Euler(new Vector3(xAxisChange, yAxisRotateOnRelease, zAxisRotateOnRelease));
             if (xChangePositive)
@@ -177,6 +197,10 @@ public class ScytheState : MonoBehaviour
                 xAxisChange -= Time.deltaTime * CalcProgram.getDist3D(lockedVelocity) * speedToSpinRatio;
             }
             
+        }
+        else
+        {
+            addVelocity = Vector3.zero;
         }
         if(scytheState == "stuck")
         {

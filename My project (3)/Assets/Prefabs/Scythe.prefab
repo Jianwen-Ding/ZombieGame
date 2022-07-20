@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bc0300e976173994a92b5e91881aeaad, type: 2}
+  - {fileID: 2100000, guid: 3fffe752ee590bf4592af441729876d8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,7 +92,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8390934719223031447}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
@@ -129,12 +129,21 @@ MonoBehaviour:
   grabbedBy: {fileID: 0}
   camRig: {fileID: 0}
   setSize: {x: 0, y: 0, z: 0}
-  scytheState: 
+  scytheState: flying
   xChangePositive: 0
   lockedVelocity: {x: 0, y: 0, z: 0}
+  addVelocity: {x: 0, y: 0, z: 0}
   zAxisRotateOnRelease: 0
   yAxisRotateOnRelease: 0
   xAxisChange: 0
-  speedToSpinRatio: 1000
+  speedToSpinRatio: 250
   rotationDebug: 0
-  hitImpulse: 5
+  damageThrowDeal: 0
+  minimumThrowSpeed: 4
+  throwSpeedMultiplier: 2
+  hitImpulse: 0.5
+  isSlashing: 0
+  knockBackSlash: 30
+  damageOnSlash: 0
+  slashSizeIncrease: {x: 0.03, y: 0.06, z: 0.15}
+  slashOriginalSize: {x: 0, y: 0, z: 0}

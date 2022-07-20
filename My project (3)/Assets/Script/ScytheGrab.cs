@@ -209,25 +209,32 @@ public class ScytheGrab : MonoBehaviour
             }
             //if(angleDiffrenceChange > Mathf.Abs(targetAngle.x - anglesScytheCurrent.x) && angleDiffrenceChange > Mathf.Abs(targetAngle.y - anglesScytheCurrent.y))
             //{
-            /*Vector2 angleChange = CalcProgram.getVectorFromAngle2D(CalcProgram.getAngleBetweenPoints2D(targetAngle, anglesScytheCurrent), angleSpeedChange * Time.deltaTime);
-            anglesScytheCurrent = new Vector2(anglesScytheCurrent.x + angleChange.x, anglesScytheCurrent.y + angleChange.y);
-            designatedScythe.transform.position = CalcProgram.getVectorFromAngleBetweenTwoPoints3D(anglesScytheCurrent.x, anglesScytheCurrent.y, contTransform.position, distFromAnch);*/
-            if (rightHand && OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0 || rightHand == false && OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0)
+            if (rightHand && (OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) != 0 || rightHand == false && (OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) != 0)))
             {
-                Debug.DrawRay(contTransform.position, contTransform.position + contTransform.forward * 5, Color.red, 0.5f);
-                /*distFromAnch = CalcProgram.getDistBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
-                anglesScytheCurrent = CalcProgram.getAngleBetweenPoints3D(designatedScythe.transform.position, contTransform.position);
-                targetAngle = new Vector2(camRig.rightControllerAnchor.rotation.x, contTransform.rotation.y);
-                //if(angleDiffrenceChange > Mathf.Abs(targetAngle.x - anglesScytheCurrent.x) && angleDiffrenceChange > Mathf.Abs(targetAngle.y - anglesScytheCurrent.y))
-                //{
-                Vector2 angleChange = CalcProgram.getVectorFromAngle2D(CalcProgram.getAngleBetweenPoints2D(targetAngle, anglesScytheCurrent), angleSpeedChange * Time.deltaTime);
-                anglesScytheCurrent = new Vector2(anglesScytheCurrent.x + angleChange.x, anglesScytheCurrent.y + angleChange.y);
-                designatedScythe.transform.position = CalcProgram.getVectorFromAngleBetweenTwoPoints3D(anglesScytheCurrent.x, anglesScytheCurrent.y, contTransform.position, distFromAnch);
-                //Vector3 lockedVel = designatedState.getLockedVel();
-                //float velSpeed = CalcProgram.getDist3D(lockedVel);
-                //designatedState.setLockedVel(CalcProgram.getVectorFromAngle3D(angleChange.x, angleChange.y, velSpeed));
-                //}*/
-                
+                if(designatedState.getState() == "flying")
+                {
+                    OVRPose localPose;
+                    OVRPose offsetPose;
+                    Vector3 linearVelocity;
+                    if (rightHand)
+                    {
+                        localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch), orientation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch) };
+                        offsetPose = new OVRPose { position = anchorOffsetPosition, orientation = anchorOffsetRotation };
+                        localPose = localPose * offsetPose;
+                        OVRPose trackingSpace = transform.ToOVRPose() * localPose.Inverse();
+                        linearVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);
+                    }
+                    else
+                    {
+                        localPose = new OVRPose { position = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch), orientation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch) };
+                        offsetPose = new OVRPose { position = anchorOffsetPosition, orientation = anchorOffsetRotation };
+                        localPose = localPose * offsetPose;
+                        OVRPose trackingSpace = transform.ToOVRPose() * localPose.Inverse();
+                        linearVelocity = trackingSpace.orientation * OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch);
+                    }
+                    designatedState.setAddVel(linearVelocity * angleSpeedChange);
+                }
+
             }
         }
         else

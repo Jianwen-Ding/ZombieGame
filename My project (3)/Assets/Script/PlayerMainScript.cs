@@ -60,6 +60,24 @@ public class PlayerMainScript : MonoBehaviour
         return maxHealth;
     }
     // Start is called before the first frame update
+    private void Awake()
+    {
+        //establish sole player
+        bool foundOthers = false;
+        GameObject[] otherObjects = GameObject.FindGameObjectsWithTag("Player");
+        for (int x = 0; x < otherObjects.Length; x++)
+        {
+            if (otherObjects[x] != gameObject)
+            {
+                foundOthers = true;
+                Destroy(gameObject);
+            }
+        }
+        if (foundOthers == false)
+        {
+            solePlayer = gameObject;
+        }
+    }
     void Start()
     {
         //establish col check
@@ -115,7 +133,7 @@ public class PlayerMainScript : MonoBehaviour
             gameObject.transform.Rotate(0, OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x * camMoveSpeed * Time.deltaTime, 0);
 
         }
-        if (colCheck.getIsGrounded() && hasJumped == false && (OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) != 0 || OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) != 0))
+        if (colCheck.getIsGrounded() && hasJumped == false && (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0 || OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0))
         {
             rb.AddForce(new Vector3(0,jumpForce,0), ForceMode.Impulse);
             hasJumped = true;

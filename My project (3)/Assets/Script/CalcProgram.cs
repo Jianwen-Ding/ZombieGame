@@ -15,7 +15,7 @@ public class CalcProgram : MonoBehaviour
     }
     static public float getDist3D(float x, float y, float z)
     {
-        return Mathf.Sqrt(x * x + y * y + z + z);
+        return Mathf.Sqrt(x * x + y * y + z * z);
     }
     static public float getDist3D(Vector3 point)
     {
@@ -56,10 +56,13 @@ public class CalcProgram : MonoBehaviour
     }
     static public Vector3 getVectorFromAngle3D(float angleX, float angleY, float distance)
     {
+        float xUse = angleX % 360;
+        float yUse = angleY % 360;
         Vector3 ret;
-        ret.x = getVectorFromAngle2D(angleX, distance).x;
-        ret.y = Mathf.Sin(angleY * Mathf.Deg2Rad) * distance; 
-        ret.z = getVectorFromAngle2D(angleX, distance).y;
+        ret.y = Mathf.Sin(yUse * Mathf.Deg2Rad) * distance;
+        float diameterXAxis = Mathf.Cos(yUse * Mathf.Deg2Rad) * distance;
+        ret.x = getVectorFromAngle2D(xUse, diameterXAxis).x;
+        ret.z = getVectorFromAngle2D(xUse, diameterXAxis).y;
         return ret;
     }
     static public Vector2 getVectorFromAngleBetweenTwoPoints2D(float angle, Vector2 origin, float distance)
@@ -72,10 +75,7 @@ public class CalcProgram : MonoBehaviour
     }
     static public Vector3 getVectorFromAngleBetweenTwoPoints3D(float angleX, float angleY, Vector3 origin, float distance)
     {
-        Vector3 ret;
-        ret.x = getVectorFromAngle2D(angleX, distance).x;
-        ret.y = Mathf.Sin(angleY * Mathf.Deg2Rad) * distance;
-        ret.z = getVectorFromAngle2D(angleX, distance).y;
+        Vector3 ret = getVectorFromAngle3D(angleX, angleY, distance);
         ret = new Vector3(ret.x + origin.x, ret.y + origin.y, ret.z + origin.z);
         return ret;
     }
@@ -113,30 +113,53 @@ public class CalcProgram : MonoBehaviour
     //angleY
     static public Vector2 getAngle3D(float x, float y, float z)
     {
+        bool xPos = x >= 0;
+        bool zPos = z >= 0;
         Vector2 ret;
         ret.x = Mathf.Rad2Deg * Mathf.Atan2(z, x);
-        ret.y = Mathf.Rad2Deg * Mathf.Atan2(y, z);
+        float dist = getDist2D(x,z);
+        ret.y = Mathf.Rad2Deg * Mathf.Atan2(y, dist);
+        ret.x %= 360;
+        ret.y %= 360;
+        if (ret.x < 0)
+        {
+            ret.x = 360 + ret.x;
+        }
+        if (ret.y < 0)
+        {
+            ret.y = 360 + ret.y ;
+        }
+        if (xPos == true && zPos == true)
+        {
+            ret.x = (ret.x % 90);
+        }
+        if (xPos ==false && zPos == true)
+        {
+            ret.x = (ret.x % 90) + 90;
+        }
+        if (xPos == false && zPos == false)
+        {
+            ret.x = (ret.x % 90) + 180;
+        }
+        if (xPos == true && zPos == false)
+        {
+            ret.x = (ret.x % 90) + 270;
+        }
+       
         return ret;
     }
     static public Vector2 getAngle3D(Vector3 vector)
     {
-        Vector2 ret;
-        ret.x = Mathf.Rad2Deg * Mathf.Atan2(vector.z, vector.x);
-        ret.y = Mathf.Rad2Deg * Mathf.Atan2(vector.y, vector.z);
-        return ret;
+        return getAngle3D(vector.x, vector.y, vector.z);
     }
     static public Vector2 getAngleBetweenPoints3D(float x, float y, float z, float x1, float y1, float z1)
     {
-        Vector2 ret;
-        ret.x = Mathf.Rad2Deg * Mathf.Atan2(z - z1, x - x1);
-        ret.y = Mathf.Rad2Deg * Mathf.Atan2(y - y1, z - z1);
+        Vector2 ret = getAngle3D(new Vector3(x - x1, y - y1, z - z1));
         return ret;
     }
     static public Vector2 getAngleBetweenPoints3D(Vector3 vector, Vector3 origin)
     {
-        Vector2 ret;
-        ret.x = Mathf.Rad2Deg * Mathf.Atan2(vector.z - origin.z, vector.x - origin.x);
-        ret.y = Mathf.Rad2Deg * Mathf.Atan2(vector.y - origin.y, vector.z - origin.z);
+        Vector2 ret = getAngle3D(new Vector3(vector.x - origin.x, vector.y - origin.y, vector.z - origin.z));
         return ret;
     }
 }
