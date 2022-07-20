@@ -20,7 +20,8 @@ public class baseEnemyAttackScript : MonoBehaviour
     float distAway;
     [SerializeField]
     bool hasProjectileScript;
-
+    [SerializeField]
+    Vector3 attackOffSet;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +40,7 @@ public class baseEnemyAttackScript : MonoBehaviour
             attackCoolDownLeft -= Time.deltaTime;
             if(attackCoolDownLeft <= 0)
             {
-                Vector2 anglesToPlayer = CalcProgram.getAngleBetweenPoints3D(player.transform.position, gameObject.transform.position);
+                Vector2 anglesToPlayer = CalcProgram.getAngleBetweenPoints3D(player.transform.position, gameObject.transform.position + attackOffSet);
                 GameObject projectile;
                 if (distAway > 0)
                 {

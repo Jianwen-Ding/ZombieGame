@@ -42,7 +42,7 @@ public class ScytheState : MonoBehaviour
     [SerializeField]
     float rotationDebug;
     [SerializeField]
-    float damageThrowDeal;
+    int damageThrowDeal;
     [SerializeField]
     float minimumThrowSpeed;
     [SerializeField]
@@ -155,6 +155,11 @@ public class ScytheState : MonoBehaviour
             {
                 other.gameObject.GetComponent<Rigidbody>().AddForce(lockedVelocity * hitImpulse, ForceMode.Impulse);
             }
+            BaseEnemy potBEnemy = other.gameObject.GetComponent<BaseEnemy>();
+            if (potBEnemy != null)
+            {
+                potBEnemy.damage(damageThrowDeal);
+            }
         }
         if(other.gameObject.tag != "Hands" && isSlashing && other.gameObject.layer != 6)
         {
@@ -162,6 +167,12 @@ public class ScytheState : MonoBehaviour
             {
                 Vector2 angles = CalcProgram.getAngleBetweenPoints3D(transform.position, camRig.centerEyeAnchor.position);
                 other.gameObject.GetComponent<Rigidbody>().AddForce(CalcProgram.getVectorFromAngle3D(angles.x, angles.y, knockBackSlash), ForceMode.Impulse);
+                
+            }
+            BaseEnemy potBEnemy = other.gameObject.GetComponent<BaseEnemy>();
+            if (potBEnemy != null)
+            {
+                potBEnemy.damage(damageOnSlash);
             }
            
         }
