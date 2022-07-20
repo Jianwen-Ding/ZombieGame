@@ -33,14 +33,29 @@ public class baseEnemyAttackScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distAway = CalcProgram.getDistBetweenPoints3D(player.transform.position, gameObject.transform.position);
-        if(enemyBase.getIsActivated() && enemyBase.getIsDead() && distAway < range)
+        float distance = CalcProgram.getDistBetweenPoints3D(player.transform.position, gameObject.transform.position);
+        if(enemyBase.getIsActivated() && enemyBase.getIsDead() == false && distance < range)
         {
             attackCoolDownLeft -= Time.deltaTime;
             if(attackCoolDownLeft <= 0)
             {
                 Vector2 anglesToPlayer = CalcProgram.getAngleBetweenPoints3D(player.transform.position, gameObject.transform.position);
-                GameObject projectile = Instantiate(attackPrefab, CalcProgram.getVectorFromAngleBetweenTwoPoints3D(anglesToPlayer.x , anglesToPlayer.y, gameObject.transform.position, distAway), Quaternion.identity.normalized);
+                GameObject projectile;
+                if (distAway > 0)
+                {
+                    projectile = Instantiate(attackPrefab, CalcProgram.getVectorFromAngleBetweenTwoPoints3D(anglesToPlayer.x, anglesToPlayer.y, gameObject.transform.position, distAway), Quaternion.identity.normalized);
+                    projectile.transform.position = CalcProgram.getVectorFromAngleBetweenTwoPoints3D(anglesToPlayer.x, anglesToPlayer.y, gameObject.transform.position, distAway);
+                }
+                else
+                {
+                    projectile = Instantiate(attackPrefab, gameObject.transform.position, Quaternion.identity.normalized);
+                }
+                
+                if (hasProjectileScript)
+                {
+                    projectile.GetComponent<DamagingProjectileScript>().setDirection(anglesToPlayer);
+                }
+                attackCoolDownLeft = attackCoolDown;
             }
         }
     }

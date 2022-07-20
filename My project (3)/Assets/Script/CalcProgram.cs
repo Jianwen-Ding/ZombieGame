@@ -38,14 +38,14 @@ public class CalcProgram : MonoBehaviour
         float xDif = x - x1 ;
         float yDif = y - y1;
         float zDif = z - z1;
-        return Mathf.Sqrt(xDif * xDif + yDif * yDif + zDif + zDif);
+        return Mathf.Sqrt(xDif * xDif + yDif * yDif + zDif * zDif);
     }
     static public float getDistBetweenPoints3D(Vector3 vector, Vector3 origin)
     {
         float xDif = vector.x - origin.x;
         float yDif = vector.y - origin.y;
         float zDif = vector.z - origin.z;
-        return Mathf.Sqrt(xDif * xDif + yDif * yDif + zDif + zDif);
+        return Mathf.Sqrt(xDif * xDif + yDif * yDif + zDif * zDif);
     }
     static public Vector2 getVectorFromAngle2D(float angle, float distance)
     {

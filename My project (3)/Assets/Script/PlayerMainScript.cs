@@ -24,7 +24,9 @@ public class PlayerMainScript : MonoBehaviour
     [SerializeField]
     string leftScytheState;
     //Health Varibles
+    [SerializeField]
     private int health;
+    [SerializeField]
     private int maxHealth;
     //Move Var
     [SerializeField]

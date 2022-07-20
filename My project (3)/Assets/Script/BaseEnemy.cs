@@ -9,6 +9,8 @@ public class BaseEnemy : MonoBehaviour
     GameObject player;
     [SerializeField]
     MeshRenderer render;
+    [SerializeField]
+    Vector3 startingPos;
     //health
     [SerializeField]
     int health;
@@ -58,6 +60,7 @@ public class BaseEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        startingPos = gameObject.transform.position;
         player = PlayerMainScript.solePlayer;
         render = gameObject.GetComponent<MeshRenderer>();
     }
@@ -83,6 +86,7 @@ public class BaseEnemy : MonoBehaviour
                     isDead = false;
                     health = maxHealth;
                     render.material = baseMat;
+                    gameObject.transform.position = startingPos;
                 }
 
             }

@@ -218,7 +218,8 @@ GameObject:
   - component: {fileID: 401760705}
   - component: {fileID: 401760704}
   - component: {fileID: 401760709}
-  m_Layer: 0
+  - component: {fileID: 401760710}
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -273,7 +274,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 343e6df61fa867b4186e0e717de55064, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -331,15 +332,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   render: {fileID: 0}
-  health: 0
-  maxHealth: 0
-  baseMat: {fileID: 0}
-  damagedMat: {fileID: 0}
+  startingPos: {x: 0, y: 0, z: 0}
+  health: 5
+  maxHealth: 5
+  baseMat: {fileID: 2100000, guid: 343e6df61fa867b4186e0e717de55064, type: 2}
+  damagedMat: {fileID: 2100000, guid: 77b36d008b3a49e4abe282f2d0788005, type: 2}
   timeDamageFlashedLeft: 0
   timeDamageFlashed: 0
-  deadMat: {fileID: 0}
+  deadMat: {fileID: 2100000, guid: 4dbd1b868132a914b8df40d464a696dd, type: 2}
   activated: 0
-  activationRange: 0
+  activationRange: 15
+--- !u!114 &401760710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401760703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fe82faddaeddef42a010e9af0edf5ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPrefab: {fileID: 9190474715101224745, guid: bcd652268264c974790790675a9b9a79,
+    type: 3}
+  enemyBase: {fileID: 0}
+  player: {fileID: 0}
+  range: 15
+  attackCoolDownLeft: 0
+  attackCoolDown: 2
+  distAway: 0
+  hasProjectileScript: 0
 --- !u!1 &630688007
 GameObject:
   m_ObjectHideFlags: 0
