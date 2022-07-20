@@ -160,7 +160,7 @@ public class ScytheState : MonoBehaviour
     {
         if (scytheState == "grabbed")
         {
-            
+            rb.isKinematic = true;
         }
         if(scytheState == "flying")
         {

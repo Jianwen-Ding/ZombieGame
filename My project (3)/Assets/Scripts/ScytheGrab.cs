@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScytheGrab : MonoBehaviour
 {
-    
+    GameObject player;
     #region debug
     [SerializeField]
     bool debugBool;
@@ -98,6 +98,7 @@ public class ScytheGrab : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         line = gameObject.GetComponent<LineRenderer>();
         line.positionCount = 2;
         if (designatedScythe != null)
@@ -133,24 +134,10 @@ public class ScytheGrab : MonoBehaviour
     }
 
 
-    void OnTriggerEnter(Collider otherCollider)
-    {
-        if(otherCollider.gameObject == designatedScythe)
-        {
-            scytheCurrentlyInRange = true;
-        }
-        
-    }
-    void OnTriggerExit(Collider otherCollider)
-    {
-        if (otherCollider.gameObject == designatedScythe)
-        {
-            scytheCurrentlyInRange = false;
-        }
-    }
     // Update is called once per frame
     void Update()
     {
+        scytheCurrentlyInRange = Vector3.Distance(player.transform.position, this.transform.position) < 4;
         designatedState.setSlash(slashState == "slash");
         if (debugBool)
         {
