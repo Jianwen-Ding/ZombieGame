@@ -129,6 +129,8 @@ public class PlayerMainScript : MonoBehaviour
         {
             solePlayer = gameObject;
         }
+
+        setMaxHealth(20);
     }
 
     // Update is called once per frame
