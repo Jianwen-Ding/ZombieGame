@@ -8,8 +8,15 @@ public class MusicScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MusicScript[] allMusic = 
-        if()
+        GameObject[] allMusic = GameObject.FindGameObjectsWithTag("Music");
+        if(allMusic.Length > 1)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            soleMusic = this;
+        }
     }
 
     // Update is called once per frame
