@@ -100,6 +100,11 @@ public class ScytheGrab : MonoBehaviour
     float distFromAnch;
     #endregion
     // Start is called before the first frame update
+    public void forceGrab()
+    {
+        scytheGrabbed = true;
+        designatedState.establishGrab();
+    }
     void Start()
     {
         line = gameObject.GetComponent<LineRenderer>();
@@ -161,12 +166,13 @@ public class ScytheGrab : MonoBehaviour
             if (debugBool)
             {
                 scytheGrabbed = true;
+                designatedState.establishGrab();
                 debugBool = false;
             }
             if (debugRelease)
             {
-                designatedScythe.transform.parent.parent = null;
                 scytheGrabbed = false;
+                designatedState.endGrab(Vector3.zero, Vector3.zero);
                 debugRelease = false;
             }
             if (scytheGrabbed == false)
