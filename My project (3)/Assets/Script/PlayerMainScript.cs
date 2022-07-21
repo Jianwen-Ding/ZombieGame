@@ -5,6 +5,10 @@ using UnityEngine.XR;
 using UnityEngine.SceneManagement;
 public class PlayerMainScript : MonoBehaviour
 {
+    [SerializeField]
+    AudioClip jumpSound;
+    [SerializeField]
+    AudioSource audioS;
     //Devices
     OVRCameraRig cam = null;
     //gameObject
@@ -94,6 +98,8 @@ public class PlayerMainScript : MonoBehaviour
     }
     void Start()
     {
+        //establish audio
+        audioS = gameObject.GetComponent<AudioSource>();
         //establish col check
         colCheck = GameObject.FindGameObjectWithTag("PlayerCollider").GetComponent<isInCollision>();
         //establish camera
@@ -156,7 +162,14 @@ public class PlayerMainScript : MonoBehaviour
         if (colCheck.getIsGrounded() && hasJumped == false && (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) != 0 || OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) != 0))
         {
             rb.AddForce(new Vector3(0,jumpForce,0), ForceMode.Impulse);
-            hasJumped = true;
+            if(jumpSound != null)
+            {
+                audioS.clip = jumpSound;
+                audioS.time = 0;
+                audioS.Play();
+                hasJumped = true;
+            }
+            
         }
         if(colCheck.getIsGrounded() == false)
         {
