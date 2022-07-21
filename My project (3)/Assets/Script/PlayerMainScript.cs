@@ -28,6 +28,10 @@ public class PlayerMainScript : MonoBehaviour
     private int health;
     [SerializeField]
     private int maxHealth;
+    [SerializeField]
+    private float timePerRegen;
+    [SerializeField]
+    private float timePerRegenLeft;
     //Move Var
     [SerializeField]
     private float speed;
@@ -44,10 +48,18 @@ public class PlayerMainScript : MonoBehaviour
     public void damage(int damage)
     {
         health -= damage;
+        if(health <= 0)
+        {
+            SceneManager.LoadScene("City");
+        }
     }
     public void heal(int heal)
     {
         health += heal;
+        if(health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
     public int getHealth()
     {
@@ -116,6 +128,12 @@ public class PlayerMainScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timePerRegenLeft -= Time.deltaTime;
+        if(timePerRegenLeft < 0)
+        {
+            timePerRegenLeft = timePerRegen;
+            heal(1);
+        }
         float sideWaysAngle = CalcProgram.getAngleBetweenPoints2D(cam.rightEyeAnchor.position.x, cam.rightEyeAnchor.position.z, cam.leftEyeAnchor.position.x, cam.leftEyeAnchor.position.z);
         sideWaysAngle += 160;
         cameraAngle = sideWaysAngle;

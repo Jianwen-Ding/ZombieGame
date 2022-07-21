@@ -138,12 +138,13 @@ MonoBehaviour:
   xAxisChange: 0
   speedToSpinRatio: 250
   rotationDebug: 0
-  damageThrowDeal: 0
+  damageThrowDeal: 2
   minimumThrowSpeed: 4
   throwSpeedMultiplier: 2
-  hitImpulse: 0.5
+  hitImpulse: 2
+  hasSlashedBefore: 0
   isSlashing: 0
-  knockBackSlash: 30
-  damageOnSlash: 0
+  knockBackSlash: 100
+  damageOnSlash: 5
   slashSizeIncrease: {x: 0.03, y: 0.06, z: 0.15}
   slashOriginalSize: {x: 0, y: 0, z: 0}
