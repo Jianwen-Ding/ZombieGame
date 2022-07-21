@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class ScytheGrab : MonoBehaviour
 {
-    
+
+    #region audio
+    [SerializeField]
+    AudioSource audioS;
+    [SerializeField]
+    AudioClip teleportSound;
+    [SerializeField]
+    AudioClip grabSound;
+    #endregion
     #region debug
     [SerializeField]
     bool debugBool;

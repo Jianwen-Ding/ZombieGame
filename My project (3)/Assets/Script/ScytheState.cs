@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ScytheState : MonoBehaviour
 {
+    //audio
+    [SerializeField]
+    AudioSource audioS;
+    [SerializeField]
+    AudioClip hitSound;
     //establish
     [SerializeField]
     BoxCollider collide;
@@ -182,7 +187,13 @@ public class ScytheState : MonoBehaviour
                 potBEnemy.damage(damageOnSlash);
                 hasSlashedBefore = true;
             }
-           
+            if (hitSound != null)
+            {
+                audioS.clip = hitSound;
+                audioS.time = 0;
+                audioS.Play();
+            }
+
         }
     }
     private void OnTriggerStay(Collider other)
@@ -200,6 +211,12 @@ public class ScytheState : MonoBehaviour
             {
                 potBEnemy.damage(damageOnSlash);
                 hasSlashedBefore = true;
+                if (hitSound != null)
+                {
+                    audioS.clip = hitSound;
+                    audioS.time = 0;
+                    audioS.Play();
+                }
             }
 
         }
