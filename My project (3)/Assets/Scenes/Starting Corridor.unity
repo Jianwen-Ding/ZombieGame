@@ -5689,7 +5689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60599441cecfbde49ac16cc55ad735ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugBool: 1
+  debugBool: 0
   debugRelease: 0
   line: {fileID: 0}
   rightHand: 1
@@ -8486,7 +8486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60599441cecfbde49ac16cc55ad735ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugBool: 1
+  debugBool: 0
   debugRelease: 0
   line: {fileID: 0}
   rightHand: 0
