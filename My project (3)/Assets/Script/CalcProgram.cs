@@ -89,11 +89,36 @@ public class CalcProgram : MonoBehaviour
     //Output is in degree
     static public float getAngle2D(float x, float y)
     {
-        return Mathf.Rad2Deg * Mathf.Atan2(y, x);
+        bool xPos = x >= 0;
+        bool yPos = y >= 0;
+        float ret;
+        ret = Mathf.Rad2Deg * Mathf.Atan2(y, x);
+        ret %= 360;
+        if (ret < 0)
+        {
+            ret = 360 + ret;
+        }
+        if (xPos == true && yPos == true)
+        {
+            ret = (ret % 90);
+        }
+        if (xPos == false && yPos == true)
+        {
+            ret = (ret % 90) + 90;
+        }
+        if (xPos == false && yPos == false)
+        {
+            ret = (ret % 90) + 180;
+        }
+        if (xPos == true && yPos == false)
+        {
+            ret = (ret % 90) + 270;
+        }
+        return ret;
     }
     static public float getAngle2D(Vector2 vector)
     {
-        return Mathf.Rad2Deg * Mathf.Atan2(vector.y, vector.x);
+        return getAngle2D(vector.x, vector.y);
     }
     static public float getAngleBetweenPoints2D(float x, float y, float x2, float y2)
     {

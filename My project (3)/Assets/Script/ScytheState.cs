@@ -53,6 +53,8 @@ public class ScytheState : MonoBehaviour
     float hitImpulse;
     //slash
     [SerializeField]
+    bool hasSlashedBefore = false;
+    [SerializeField]
     bool isSlashing;
     [SerializeField]
     float knockBackSlash;
@@ -63,6 +65,10 @@ public class ScytheState : MonoBehaviour
     Vector3 slashSizeIncrease;
     [SerializeField]
     Vector3 slashOriginalSize;
+    public void setHasSlashed(bool set)
+    {
+        hasSlashedBefore = set;
+    }
     public string getState()
     {
         return scytheState;
@@ -160,6 +166,7 @@ public class ScytheState : MonoBehaviour
             {
                 potBEnemy.damage(damageThrowDeal);
             }
+            
         }
         if(other.gameObject.tag != "Hands" && isSlashing && other.gameObject.layer != 6)
         {
@@ -173,8 +180,28 @@ public class ScytheState : MonoBehaviour
             if (potBEnemy != null)
             {
                 potBEnemy.damage(damageOnSlash);
+                hasSlashedBefore = true;
             }
            
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (hasSlashedBefore == false && other.gameObject.tag != "Hands" && isSlashing && other.gameObject.layer != 6)
+        {
+            if (other.gameObject.GetComponent<Rigidbody>() != null)
+            {
+                Vector2 angles = CalcProgram.getAngleBetweenPoints3D(transform.position, camRig.centerEyeAnchor.position);
+                other.gameObject.GetComponent<Rigidbody>().AddForce(CalcProgram.getVectorFromAngle3D(angles.x, angles.y, knockBackSlash), ForceMode.Impulse);
+
+            }
+            BaseEnemy potBEnemy = other.gameObject.GetComponent<BaseEnemy>();
+            if (potBEnemy != null)
+            {
+                potBEnemy.damage(damageOnSlash);
+                hasSlashedBefore = true;
+            }
+
         }
     }
     // Update is called once per frame

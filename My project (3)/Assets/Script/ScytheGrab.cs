@@ -209,7 +209,7 @@ public class ScytheGrab : MonoBehaviour
             }
             //if(angleDiffrenceChange > Mathf.Abs(targetAngle.x - anglesScytheCurrent.x) && angleDiffrenceChange > Mathf.Abs(targetAngle.y - anglesScytheCurrent.y))
             //{
-            if (rightHand && (OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) != 0 || rightHand == false && (OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) != 0)))
+            if (rightHand && (OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) != 0) || rightHand == false && (OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) != 0))
             {
                 if(designatedState.getState() == "flying")
                 {
@@ -287,18 +287,11 @@ public class ScytheGrab : MonoBehaviour
             if(slashState == "uncharged")
             {
                 designatedScythe.GetComponent<MeshRenderer>().material = unchargedMat;
-                if (Mathf.Abs(angleOfSythe - cameraAngle) > xAxisThreshold)
+                timeChargeLeft -= Time.deltaTime;
+                if (timeChargeLeft <= 0)
                 {
-                    timeChargeLeft -= Time.deltaTime;
-                    if (timeChargeLeft <= 0)
-                    {
-                        designatedScythe.GetComponent<MeshRenderer>().material = chargedMat;
-                        slashState = "charged";
-                        timeChargeLeft = timeCharge;
-                    }
-                }
-                else
-                {
+                    designatedScythe.GetComponent<MeshRenderer>().material = chargedMat;
+                    slashState = "charged";
                     timeChargeLeft = timeCharge;
                 }
             }
@@ -329,6 +322,7 @@ public class ScytheGrab : MonoBehaviour
                     slashState = "slash";
                     designatedScythe.GetComponent<MeshRenderer>().material = slashMat;
                     timeSlashLeft = timeSlash;
+                    designatedState.setHasSlashed(false);
                 }
             }
             if (slashState == "slash")

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DamagingProjectileScript : MonoBehaviour
 {
+    bool hasDamaged = false;
     bool establishDir = false;
     Rigidbody rb;
     [SerializeField]
@@ -26,8 +27,10 @@ public class DamagingProjectileScript : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 7)
+        
+        if (other.gameObject.layer == 7 && hasDamaged == false)
         {
+            hasDamaged = true;
             PlayerMainScript.solePlayer.GetComponent<PlayerMainScript>().damage(damage);
             Destroy(gameObject);
         }

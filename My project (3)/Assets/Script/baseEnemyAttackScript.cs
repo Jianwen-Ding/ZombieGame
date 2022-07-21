@@ -40,7 +40,7 @@ public class baseEnemyAttackScript : MonoBehaviour
             attackCoolDownLeft -= Time.deltaTime;
             if(attackCoolDownLeft <= 0)
             {
-                Vector2 anglesToPlayer = CalcProgram.getAngleBetweenPoints3D(player.transform.position, gameObject.transform.position + attackOffSet);
+                Vector2 anglesToPlayer = CalcProgram.getAngleBetweenPoints3D(player.transform.position + attackOffSet, gameObject.transform.position);
                 GameObject projectile;
                 if (distAway > 0)
                 {

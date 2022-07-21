@@ -43,7 +43,7 @@ public class BaseEnemy : MonoBehaviour
         health -= damage;
         render.material = damagedMat;
         timeDamageFlashedLeft = timeDamageFlashed;
-        if(health < 0)
+        if(health <= 0)
         {
             isDead = true;
             render.material = deadMat;
@@ -95,6 +95,7 @@ public class BaseEnemy : MonoBehaviour
                 if (timeDamageFlashedLeft <= 0)
                 {
                     render.material = baseMat;
+                    timeDamageFlashedLeft = timeDamageFlashed;
                 }
                 else
                 {
