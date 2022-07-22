@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
+    [SerializeField]
+    static int teleCount;
     GameObject player;
     Collider playerCollider;
     [SerializeField]
     float teleTimer;
     bool colliding;
+    Material teleColor;
 
     public float timeUntilTP = 3f;
 
@@ -17,8 +20,15 @@ public class Teleporter : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerCollider = GameObject.FindGameObjectWithTag("PlayerCollider").GetComponent<Collider>();
         Debug.Log(playerCollider);
+        if (teleColor == null)
+        {
+            teleColor = transform.GetComponent<Renderer>().material;
+        }
         teleTimer = 0f;
+        teleCount = 0;
         colliding = false;
+
+        teleColor.color = Color.red;
     }
 
     void OnTriggerEnter(Collider other)
@@ -26,14 +36,16 @@ public class Teleporter : MonoBehaviour
         if(other == playerCollider)
         {
             colliding = true;
+            teleColor.color = Color.green;
         }
     }
 
-    void OnTriggerLeave(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if(other == playerCollider)
         {
             colliding = false;
+            teleColor.color = Color.red;
         }
     }
 
@@ -45,7 +57,8 @@ public class Teleporter : MonoBehaviour
             //if player is colliding with the teleporter for over 3 seconds, send them to spawn
             if (teleTimer > timeUntilTP) {
                 player.transform.position = new Vector3(0, -30, -25.6f);
-                coliding = false;
+                colliding = false;
+                teleCount++;
             }
         } 
         else 
