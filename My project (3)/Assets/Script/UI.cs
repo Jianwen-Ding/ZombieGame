@@ -21,7 +21,11 @@ public class UI : MonoBehaviour
         }
         if (teleScript == null) 
         {
-            teleScript = GameObject.Find("Teleporter Placeholder Front").GetComponent<Teleporter>();
+            if (GameObject.Find("Teleporter Placeholder Front") != null)
+            {
+                teleScript = GameObject.Find("Teleporter Placeholder Front").GetComponent<Teleporter>();
+            }
+            
         }
     }
 

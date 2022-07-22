@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class Teleporter : MonoBehaviour
 {
     [SerializeField]
-    static int teleCount;
+    static int teleCount = 0;
     [SerializeField]
     Vector3 originalLocation;
     [SerializeField]
@@ -61,7 +61,7 @@ public class Teleporter : MonoBehaviour
 
     void Update()
     {
-        if(teleCount <= 2)
+        if(teleCount >= 2)
         {
             SceneManager.LoadScene(teleGo);
         }
