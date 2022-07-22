@@ -54,7 +54,8 @@ public class PlayerMainScript : MonoBehaviour
         health -= damage;
         if(health <= 0)
         {
-            SceneManager.LoadScene("City");
+            Scene scene = SceneManager.GetActiveScene(); 
+            SceneManager.LoadScene(scene.name);
         }
     }
     public void heal(int heal)
