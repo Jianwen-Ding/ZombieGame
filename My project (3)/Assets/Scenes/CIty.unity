@@ -15650,12 +15650,12 @@ PrefabInstance:
     - target: {fileID: 8796334184152059430, guid: f360796eee347da4593a583df4b3e501,
         type: 3}
       propertyPath: speed
-      value: 20
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8796334184152059430, guid: f360796eee347da4593a583df4b3e501,
         type: 3}
       propertyPath: health
-      value: 100
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8796334184152059430, guid: f360796eee347da4593a583df4b3e501,
         type: 3}
@@ -15665,7 +15665,7 @@ PrefabInstance:
     - target: {fileID: 8796334184152059430, guid: f360796eee347da4593a583df4b3e501,
         type: 3}
       propertyPath: maxHealth
-      value: 100
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8796334184319942429, guid: f360796eee347da4593a583df4b3e501,
         type: 3}
