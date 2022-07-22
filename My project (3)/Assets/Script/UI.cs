@@ -15,11 +15,14 @@ public class UI : MonoBehaviour
         {
             UIText = this.transform.GetChild(0).GetComponent<Text>();
         }
+        if (playerScript == null)
+        {
+            playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMainScript>();
+        }
         if (teleScript == null) 
         {
             teleScript = GameObject.Find("Teleporter Placeholder Front").GetComponent<Teleporter>();
         }
-        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMainScript>();
     }
 
     // Update is called once per frame
@@ -27,7 +30,11 @@ public class UI : MonoBehaviour
     {
         if (UIText != null) 
         {   
-            UIText.text = "Health: " + playerScript.getHealth().ToString() + "\n" + "People Saved: " + teleScript.getCount();
+            UIText.text = "Health: " + playerScript.getHealth().ToString();
+        }
+        if (teleScript != null) 
+        {
+            UIText.text += "\n" + "People Saved: " + teleScript.getCount();
         }
     }
 }
