@@ -3113,7 +3113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662482fd1b358bf49a825c4d4f15e970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newScene: BunkerEnding
+  newScene: LeaveEnding
 --- !u!65 &510069136
 BoxCollider:
   m_ObjectHideFlags: 0
