@@ -138,7 +138,7 @@ MonoBehaviour:
   timeDamageFlashed: 0.5
   deadMat: {fileID: 2100000, guid: 4dbd1b868132a914b8df40d464a696dd, type: 2}
   activated: 0
-  activationRange: 15
+  activationRange: 30
 --- !u!114 &1841755812449145804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
   player: {fileID: 0}
   range: 15
   attackCoolDownLeft: 0
-  attackCoolDown: 10
+  attackCoolDown: 5
   distAway: 0
   hasProjectileScript: 0
   attackOffSet: {x: 0, y: 0.8375, z: 0}

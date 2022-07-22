@@ -25,6 +25,10 @@ public class ScytheState : MonoBehaviour
     //"stuck"
     [SerializeField]
     string scytheState;
+    [SerializeField]
+    float flyingTimeTillGet;
+    [SerializeField]
+    float flyingTimeTillGetLeft;
     //grabbed scytheState
     float timeCharge;
     bool hasCharged;
@@ -186,19 +190,20 @@ public class ScytheState : MonoBehaviour
             {
                 potBEnemy.damage(damageOnSlash);
                 hasSlashedBefore = true;
+                if (hitSound != null)
+                {
+                    audioS.clip = hitSound;
+                    audioS.time = 0;
+                    audioS.Play();
+                }
             }
-            if (hitSound != null)
-            {
-                audioS.clip = hitSound;
-                audioS.time = 0;
-                audioS.Play();
-            }
+           
 
         }
     }
     private void OnTriggerStay(Collider other)
     {
-        if (hasSlashedBefore == false && other.gameObject.tag != "Hands" && isSlashing && other.gameObject.layer != 6)
+        if (hasSlashedBefore == false && other.gameObject.tag != "Hands" && isSlashing && other.gameObject.layer != 6 && other.gameObject.layer != 9)
         {
             if (other.gameObject.GetComponent<Rigidbody>() != null)
             {
@@ -230,6 +235,11 @@ public class ScytheState : MonoBehaviour
         }
         if(scytheState == "flying")
         {
+            flyingTimeTillGetLeft -= Time.deltaTime;
+            if(flyingTimeTillGetLeft < 0)
+            {
+                grabbedBy.GetComponent<ScytheGrab>().forceGrab();
+            }
             rb.isKinematic = false;
             if(addVelocity == Vector3.zero)
             {
@@ -256,6 +266,7 @@ public class ScytheState : MonoBehaviour
         else
         {
             addVelocity = Vector3.zero;
+            flyingTimeTillGetLeft = flyingTimeTillGet;
         }
         if(scytheState == "stuck")
         {

@@ -133,6 +133,8 @@ MonoBehaviour:
   camRig: {fileID: 0}
   setSize: {x: 0, y: 0, z: 0}
   scytheState: flying
+  flyingTimeTillGet: 2
+  flyingTimeTillGetLeft: 0
   xChangePositive: 0
   lockedVelocity: {x: 0, y: 0, z: 0}
   addVelocity: {x: 0, y: 0, z: 0}
@@ -141,9 +143,9 @@ MonoBehaviour:
   xAxisChange: 0
   speedToSpinRatio: 250
   rotationDebug: 0
-  damageThrowDeal: 2
+  damageThrowDeal: 3
   minimumThrowSpeed: 4
-  throwSpeedMultiplier: 2
+  throwSpeedMultiplier: 3
   hitImpulse: 2
   hasSlashedBefore: 0
   isSlashing: 0
@@ -161,7 +163,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c7d7eb4d56d057d43aced87f89a630ca, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

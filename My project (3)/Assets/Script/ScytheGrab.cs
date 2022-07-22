@@ -193,7 +193,7 @@ public class ScytheGrab : MonoBehaviour
                     designatedScythe.GetComponent<MeshRenderer>().material = unchargedMat;
                 }
             
-                if (rightHand && OVRInput.Get(OVRInput.Button.SecondaryThumbstick) || rightHand == false && OVRInput.Get(OVRInput.Button.PrimaryThumbstick))
+                if ((rightHand && OVRInput.Get(OVRInput.Button.SecondaryThumbstick) || rightHand == false && OVRInput.Get(OVRInput.Button.PrimaryThumbstick)))
                 {
                     designatedScythe.transform.parent = null;
                     mainController.transform.position = designatedScythe.transform.position;
@@ -201,6 +201,12 @@ public class ScytheGrab : MonoBehaviour
                     if (designatedScythe.GetComponent<ScytheState>() != null)
                     {
                         designatedState.establishGrab();
+                    }
+                    if (teleportSound != null)
+                    {
+                        audioS.clip = teleportSound;
+                        audioS.time = 0;
+                        audioS.Play();
                     }
                 }
                 if (scytheCurrentlyInRange)

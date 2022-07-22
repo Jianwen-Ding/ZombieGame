@@ -8,6 +8,8 @@ public class PlayerMainScript : MonoBehaviour
     [SerializeField]
     AudioClip jumpSound;
     [SerializeField]
+    AudioClip hurtSound;
+    [SerializeField]
     AudioSource audioS;
     //Devices
     OVRCameraRig cam = null;
@@ -56,6 +58,12 @@ public class PlayerMainScript : MonoBehaviour
         {
             Scene scene = SceneManager.GetActiveScene(); 
             SceneManager.LoadScene(scene.name);
+        }
+        if (hurtSound != null)
+        {
+            audioS.clip = hurtSound;
+            audioS.time = 0;
+            audioS.Play();
         }
     }
     public void heal(int heal)
@@ -131,7 +139,6 @@ public class PlayerMainScript : MonoBehaviour
             solePlayer = gameObject;
         }
 
-        setMaxHealth(20);
     }
 
     // Update is called once per frame

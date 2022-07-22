@@ -603,7 +603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioS: {fileID: 0}
-  teleportSound: {fileID: 0}
+  teleportSound: {fileID: 8300000, guid: c7d7eb4d56d057d43aced87f89a630ca, type: 3}
   grabSound: {fileID: 0}
   debugBool: 0
   debugRelease: 0
@@ -627,7 +627,7 @@ MonoBehaviour:
   slashMat: {fileID: 2100000, guid: 3fffe752ee590bf4592af441729876d8, type: 2}
   xAxisThreshold: 50
   timeChargeLeft: 0
-  timeCharge: 4
+  timeCharge: 2
   timeSlashLeft: 0
   timeSlash: 1.5
   velocitySlashThreshold: 2
@@ -1000,18 +1000,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpSound: {fileID: 8300000, guid: 9bb1989f821edbe41b405a40dd559b75, type: 3}
+  hurtSound: {fileID: 8300000, guid: f7906f8d2621ff94d8a00640c3ee2625, type: 3}
   audioS: {fileID: 0}
   scytheTimeNeeded: 0
   rightScythe: {fileID: 0}
   rightScytheState: 
   leftScythe: {fileID: 0}
   leftScytheState: 
-  health: 20
-  maxHealth: 20
-  timePerRegen: 2
+  health: 5
+  maxHealth: 5
+  timePerRegen: 4
   timePerRegenLeft: 0
-  speed: 1
-  jumpForce: 2
+  speed: 2
+  jumpForce: 3
   hasJumped: 0
   camMoveSpeed: 80
 --- !u!82 &1874891990
@@ -1321,7 +1322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioS: {fileID: 0}
-  teleportSound: {fileID: 0}
+  teleportSound: {fileID: 8300000, guid: c7d7eb4d56d057d43aced87f89a630ca, type: 3}
   grabSound: {fileID: 0}
   debugBool: 0
   debugRelease: 0
@@ -1345,7 +1346,7 @@ MonoBehaviour:
   slashMat: {fileID: 2100000, guid: 3fffe752ee590bf4592af441729876d8, type: 2}
   xAxisThreshold: 50
   timeChargeLeft: 0
-  timeCharge: 4
+  timeCharge: 2
   timeSlashLeft: 0
   timeSlash: 1.5
   velocitySlashThreshold: 2

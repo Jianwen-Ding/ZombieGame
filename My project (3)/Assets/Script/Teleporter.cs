@@ -1,24 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Teleporter : MonoBehaviour
 {
     [SerializeField]
     static int teleCount;
+    [SerializeField]
+    Vector3 originalLocation;
+    [SerializeField]
     GameObject player;
     Collider playerCollider;
     [SerializeField]
     float teleTimer;
     bool colliding;
     Material teleColor;
-
+    [SerializeField]
+    string teleGo;
     public float timeUntilTP = 3f;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerCollider = GameObject.FindGameObjectWithTag("PlayerCollider").GetComponent<Collider>();
+        originalLocation = player.transform.position;
         Debug.Log(playerCollider);
         if (teleColor == null)
         {
@@ -56,14 +61,25 @@ public class Teleporter : MonoBehaviour
 
     void Update()
     {
+        if(teleCount <= 2)
+        {
+            SceneManager.LoadScene(teleGo);
+        }
         if (colliding)
         {
             teleTimer += Time.deltaTime;
             //if player is colliding with the teleporter for over 3 seconds, send them to spawn
             if (teleTimer > timeUntilTP) {
-                player.transform.position = new Vector3(0, -30, -25.6f);
+                Destroy(gameObject.transform.parent.gameObject);
+                player.transform.position = originalLocation;
                 colliding = false;
                 teleCount++;
+                ScytheGrab[] getGrab = player.gameObject.GetComponentsInChildren<ScytheGrab>();
+                for (int x = 0; x < getGrab.Length; x++)
+                {
+                    getGrab[x].forceGrab();
+                }
+               
             }
         } 
         else 
