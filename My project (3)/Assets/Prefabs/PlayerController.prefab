@@ -1012,7 +1012,7 @@ MonoBehaviour:
   timePerRegen: 4
   timePerRegenLeft: 0
   speed: 2
-  jumpForce: 3
+  jumpForce: 10
   hasJumped: 0
   camMoveSpeed: 80
 --- !u!82 &1874891990
