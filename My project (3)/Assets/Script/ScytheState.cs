@@ -159,7 +159,7 @@ public class ScytheState : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag != "Hands" && scytheState == "flying" &&  other.gameObject.layer != 6)
+        if (other.gameObject.tag != "Hands" && scytheState == "flying" &&  other.gameObject.layer != 6 && other.gameObject.layer != 7 && other.gameObject.layer != 9)
         {
             stabbedObject = other.gameObject;
             scytheState = "stuck";
@@ -203,7 +203,7 @@ public class ScytheState : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (hasSlashedBefore == false && other.gameObject.tag != "Hands" && isSlashing && other.gameObject.layer != 6 && other.gameObject.layer != 9)
+        if (hasSlashedBefore == false && other.gameObject.tag != "Hands" && isSlashing)
         {
             if (other.gameObject.GetComponent<Rigidbody>() != null)
             {
