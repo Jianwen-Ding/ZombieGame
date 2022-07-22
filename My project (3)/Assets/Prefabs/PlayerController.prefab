@@ -999,7 +999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3175b0b82c8e14c8ffca1a48bc886c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSound: {fileID: 0}
+  jumpSound: {fileID: 8300000, guid: 9bb1989f821edbe41b405a40dd559b75, type: 3}
   audioS: {fileID: 0}
   scytheTimeNeeded: 0
   rightScythe: {fileID: 0}

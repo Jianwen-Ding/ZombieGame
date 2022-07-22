@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioS: {fileID: 0}
-  hitSound: {fileID: 0}
+  hitSound: {fileID: 8300000, guid: c7d7eb4d56d057d43aced87f89a630ca, type: 3}
   collide: {fileID: 8390934719223031444}
   grabbedBy: {fileID: 0}
   camRig: {fileID: 0}

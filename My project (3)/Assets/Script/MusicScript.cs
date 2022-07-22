@@ -13,6 +13,7 @@ public class MusicScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = gameObject.GetComponent<AudioSource>();
         GameObject[] allMusic = GameObject.FindGameObjectsWithTag("Music");
         if(allMusic.Length > 1)
         {
@@ -22,6 +23,7 @@ public class MusicScript : MonoBehaviour
         {
             soleMusic = this;
             DontDestroyOnLoad(gameObject);
+            audioSource.Play();
         }
     }
 
