@@ -6,13 +6,18 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour
 {
     PlayerMainScript playerScript;
-    Text health;
+    Teleporter teleScript;
+    Text UIText;
     // Start is called before the first frame update
     void Start()
     {
-        if (health == null) 
+        if (UIText == null) 
         {
-            health = this.transform.GetChild(0).GetComponent<Text>();
+            UIText = this.transform.GetChild(0).GetComponent<Text>();
+        }
+        if (teleScript == null) 
+        {
+            teleScript = GameObject.Find("Teleporter Placeholder Front").GetComponent<Teleporter>();
         }
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMainScript>();
     }
@@ -20,9 +25,9 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (health != null) 
+        if (UIText != null) 
         {   
-            health.text = "Health: " + playerScript.getHealth().ToString();
+            UIText.text = "Health: " + playerScript.getHealth().ToString() + "\n" + "People Saved: " + teleScript.getCount();
         }
     }
 }

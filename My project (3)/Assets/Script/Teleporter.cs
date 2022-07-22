@@ -49,6 +49,11 @@ public class Teleporter : MonoBehaviour
         }
     }
 
+    public int getCount() 
+    {
+        return teleCount;
+    }
+
     void Update()
     {
         if (colliding)
